@@ -13,6 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('view/index');
-});
+Route::get('/', 'Pedidoscontroller@index');
+Route::post('/ingresarPedido','Pedidoscontroller@create')->name('ingresarPedido');
