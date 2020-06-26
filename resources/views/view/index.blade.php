@@ -17,28 +17,6 @@
         widows: 100%;
       }
 
-      /*Estilos para el esado de el pedido*/
-      .estadoMain{
-        font-size: 25px;
-      }
-      .estadoSelector{
-        border: 1px #ccc solid;
-        position: absolute;
-        width: 180px;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0px 0px 3px black;
-        background: #ffffff;
-      }
-      .estadoSelector ul{
-        padding: 0;
-      }
-      .estadoSelector li{
-        list-style: none;
-        font-size: 20px;
-        border-bottom: 1px #ccc solid;
-        padding-top: 5px;
-      }
   </style>
 @endsection
 
@@ -130,16 +108,7 @@
                            <td>{{$pedido->nombre}}</td>
                            <td>{{$pedido->fecha}}</td>
                            <td>
-                             <div class="estadoMain">En Proceso
-                             </div>
-                             <div class="estadoSelector">
-                               <ul>
-                                 <li>Pendiente</li>
-                                 <li>En Proceso</li>
-                                 <li>Listo</li>
-                                 <li>Entregado</li>
-                               </ul>
-                             </div>
+                            
                            </td>
                            <td><button class="btn btn-info align-self-center" style="display:flex; margin:0 auto; " onclick="mostrarDetalle({{$pedido->id}})"><i class="fa fa-pen" style="font-size:20px;"></i></button></td>
                            <td><button class="btn btn-danger align-self-center" style="display:flex; margin:0 auto; "><i class="fa fa-trash" style="font-size:20px;"></i></button></td>
@@ -324,10 +293,7 @@
     });
     
 });
-console.log($(".estadoMain").text());
-if($(".estadoMain").text()=="En Proceso"){
-      alert("holaaa");
-} 
+
 //Cambiar estado
 /*function cambiarEstadoPedido(){
   var listado = $("#EstadoProceso select");
