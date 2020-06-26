@@ -10,6 +10,35 @@
       #nuevoCliente{
           float: right;
       }
+      #DetallePedido b{
+        margin-right: 5px;
+      }
+      #EstadoProceso select{
+        widows: 100%;
+      }
+
+      /*Estilos para el esado de el pedido*/
+      .estadoMain{
+        font-size: 25px;
+      }
+      .estadoSelector{
+        border: 1px #ccc solid;
+        position: absolute;
+        width: 180px;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0px 0px 3px black;
+        background: #ffffff;
+      }
+      .estadoSelector ul{
+        padding: 0;
+      }
+      .estadoSelector li{
+        list-style: none;
+        font-size: 20px;
+        border-bottom: 1px #ccc solid;
+        padding-top: 5px;
+      }
   </style>
 @endsection
 
@@ -24,7 +53,7 @@
           <p>Entregado</p>
         </div>
         <div class="icon">
-          <i class="ion ion-checkmark"></i>
+          <i class="fa fa-bicycle"></i>
         </div>
         
       </div>
@@ -36,10 +65,10 @@
         <div class="inner">
           <h3>53<sup style="font-size: 20px">%</sup></h3>
 
-          <p>Enviado</p>
+          <p>Listo</p>
         </div>
         <div class="icon">
-          <i class="fa fa-bicycle"></i>
+          <i class="ion ion-checkmark"></i>
         </div>
         
       </div>
@@ -84,32 +113,46 @@
         </div>
         <div class="card-body">
            <div class="table table-responsive">
-               <table class="table table-bordered">
+               <table class="table table-bordered" id="tablaPedidosID">
                    <thead class="table-dark">
                        <tr>
                            <th>Nombre</th>
                            <th>Fecha</th>
                            <th>Estado</th>
-                           <th>Abono</th>
-                           <th>Total</th>
+                           <th>Detalles</th>
+                           <th>Eliminar</th>
 
                        </tr>
                    </thead>
                    <tbody>
+                    @foreach ($pedidos as $pedido)
                        <tr>
-                           <td>Valores</td>
-                           <td>Valores</td>
-                           <td>Valores</td>
-                           <td>Valores</td>
+                           <td>{{$pedido->nombre}}</td>
+                           <td>{{$pedido->fecha}}</td>
+                           <td>
+                             <div class="estadoMain">En Proceso
+                             </div>
+                             <div class="estadoSelector">
+                               <ul>
+                                 <li>Pendiente</li>
+                                 <li>En Proceso</li>
+                                 <li>Listo</li>
+                                 <li>Entregado</li>
+                               </ul>
+                             </div>
+                           </td>
+                           <td><button class="btn btn-info align-self-center" style="display:flex; margin:0 auto; " onclick="mostrarDetalle({{$pedido->id}})"><i class="fa fa-pen" style="font-size:20px;"></i></button></td>
+                           <td><button class="btn btn-danger align-self-center" style="display:flex; margin:0 auto; "><i class="fa fa-trash" style="font-size:20px;"></i></button></td>
                        </tr>
+                      @endforeach
                    </tbody>
                    <tfoot>
-                       <tr>
+                       <!--<tr>
                            <td>Valores</td>
                            <td>Valores</td>
                            <td>Valores</td>
                            <td>Valores</td>
-                       </tr>
+                       </tr>-->
                    </tfoot>
                </table>
            </div>
@@ -152,8 +195,8 @@
             </div>
             <div class="form-group pad">
                 <div class="mb-3">
-                    <textarea class="textarea" name="txtDescipcion" placeholder="Place some text here"
-                              style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                    <textarea class="textarea" name="txtDescripcion" id="txtDescripcionID" placeholder="Ingrese la descripcion"
+                              style="width: 100%; height: 500px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
                 </div>
             </div>
             <div class="form-group">
@@ -180,6 +223,36 @@
     </div>
     <!-- /.modal-dialog -->
   </div>
+
+<!-- Modal para mostrar los detalles del pedido -->
+<div class="modal fade" id="modal-lg">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Large Modal</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="DetallePedido">
+        <p><b>Nombre:</b><span id="DetalleNombreID"></span></p>
+        <p><b>Cedula:</b><span id="DetalleCedulaID"></span></p>
+        <p><b>Telefono:</b><span id="DetalleTelefonoID"></span></p>
+        <p><b>Fecha de entrega:</b><span id="DetalleFechaID"></span></p>
+        <p><b>Descripcion:</b><span id="DetalleDescripcionID"></span></p>
+        <p><b>Abono:</b>$<span id="DetalleAbonoID"></span></p>
+        <p><b>Total:</b>$<span id="DetalleTotalID"></span></p>
+        <p><b>Estado:</b><span id="DetalleEstadoID"></span></p>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
 @endsection
 
 @section('scripts')
@@ -218,7 +291,6 @@
       // Summernote
       $('.textarea').summernote()
     });
-
     //Ingreso de usuarios
     $("#formPedido").submit(function(e){
       e.preventDefault();
@@ -228,14 +300,86 @@
         type:'POST',
         data:datos,
         success:function(response){
-          alert(response);
+          $("#modal-IngresarCL").modal('hide');
+          $("#txtNombreID").val("");
+          $("#txtTelefonoID").val("");
+          $("#txtFechaID").val("");
+          $("#txtDescripcionID").val("");
+          $("#txtCedulaID").val("");
+          $("#txtAbonoID").val("");
+          $("#txtTotalID").val("");
+          $("#tablaPedidosID").load(" #tablaPedidosID");
         },
         error:function(error){
           alert("A ocurrido un error: "+error);
         }
-        
       });
     });
+    $(".estadoMain").click(function(){
+      if ($(".estadoSelector").is(":visible")) {
+        $(".estadoSelector").hide('long');
+      }else{
+        $(".estadoSelector").show('long');
+      }
+    });
+    
 });
+console.log($(".estadoMain").text());
+if($(".estadoMain").text()=="En Proceso"){
+      alert("holaaa");
+} 
+//Cambiar estado
+/*function cambiarEstadoPedido(){
+  var listado = $("#EstadoProceso select");
+  for (let index = 0; index < listado.length; index++) {
+    if(listado[index].value=="Pendiente"){
+      listado[index].style.background = "#dc3545";
+      listado[index].style.color = "#000000";
+    }
+    if(listado[index].value=="En proceso"){
+      listado[index].style.background = "#ffc107";
+      listado[index].style.color = "#000000";
+    }
+    if(listado[index].value=="Listo"){
+      listado[index].style.background = "#17a2b8";
+      listado[index].style.color = "#000000";
+    }
+    if(listado[index].value=="Entregado"){
+      listado[index].style.background = "#28a745";
+      listado[index].style.color = "#000000";
+    }
+  }
+}*/
+
+//Ver detalles del pedido
+function mostrarDetalle(id){
+  let dato = 'id='+id; 
+  $.ajax({
+    url:'{{route("mostrarPedido")}}',
+    type:'GET',
+    data:dato,
+    dataType:'json',
+    success:function(e){
+      $("#DetalleNombreID").html("");
+      $("#DetalleCedulaID").html("");
+      $("#DetalleTelefonoID").html("");
+      $("#DetalleFechaID").html("");
+      $("#DetalleDescripcionID").html("");
+      $("#DetalleAbonoID").html("");
+      $("#DetalleTotalID").html("");
+      $("#DetalleNombreID").append(e.nombre);
+      $("#DetalleCedulaID").append(e.cedula);
+      $("#DetalleTelefonoID").append(e.telefono);
+      $("#DetalleFechaID").append(e.fecha);
+      $("#DetalleDescripcionID").append(e.descripcion);
+      $("#DetalleAbonoID").append(e.abono);
+      $("#DetalleTotalID").append(e.total);
+      $("#modal-lg").modal('show');
+    },
+    error:function(){
+      console.log("a ocurrido un error");
+    }
+  }); 
+}
 </script>
 @endsection

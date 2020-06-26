@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Pedidos;
+use App\Pedido;
+use Illuminate\Support\Facades\DB;
 
 class PedidosController extends Controller
 {
@@ -15,8 +16,8 @@ class PedidosController extends Controller
     public function index()
     {
         //
-
-        return view('view/index');
+        $pedidos = Pedido::all();
+        return view('view/index',compact('pedidos'));
     }
 
     /**
@@ -27,13 +28,27 @@ class PedidosController extends Controller
     public function create(Request $request)
     {
         //
-        $New_pedido = new Pedidos();
-        //$nuevo_producto = new Pedidos();
-        //$nuevo_producto->nombre = $request->txtNombre;
-        //$nuevo_producto->cedula = $request->txtCedula;
-        //$nuevo_producto->telefono = $request->txtTelefono;
-        //$nuevo_producto->save();
-        return "se guardo correctamente".$request->txtNombre;
+       /* $New_pedido = DB::table('pedido')->insert([
+            'nombre'=>$request['txtNombre'],
+            'cedula'=>$request['txtCedula'],
+            'telefono'=>$request['txtTelefono']
+        ]);*/
+        $nuevo_pedido = new Pedido;
+        $nuevo_pedido->nombre = $request['txtNombre'];
+        $nuevo_pedido->cedula = $request['txtCedula'];
+        $nuevo_pedido->telefono = $request['txtTelefono'];
+        $nuevo_pedido->fecha = $request['txtFecha'];
+        $nuevo_pedido->descripcion = $request['txtDescripcion'];
+        $nuevo_pedido->abono = $request['txtAbono'];
+        $nuevo_pedido->total = $request['txtTotal'];
+        $nuevo_pedido->estado = "Pendiente";
+        $nuevo_pedido->save();
+
+        return "se guardo correctamente";
+    }
+    public function mostrarDetalle(Request $request){
+        $pedido = Pedido::all()->where('id','=',$request['id'])->first();
+        return json_encode($pedido);
     }
 
     /**

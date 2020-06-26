@@ -15,3 +15,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'Pedidoscontroller@index');
 Route::post('/ingresarPedido','Pedidoscontroller@create')->name('ingresarPedido');
+Route::get('/mostrarPedido','Pedidoscontroller@mostrarDetalle')->name('mostrarPedido');
