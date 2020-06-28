@@ -20,3 +20,4 @@ Route::get('/mostrarPedido','Pedidoscontroller@mostrarDetalle')->name('mostrarPe
 
 
 Route::get('/Productos','ProductosController@index')->name('productos');
+Route::post('/ingresarProducto','ProductosController@create')->name('ingresarProducto');
