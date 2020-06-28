@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'Pedidoscontroller@index');
+Route::get('/', 'Pedidoscontroller@index')->name('index');
 Route::post('/ingresarPedido','Pedidoscontroller@create')->name('ingresarPedido');
 Route::get('/mostrarPedido','Pedidoscontroller@mostrarDetalle')->name('mostrarPedido');
+
+
+
+Route::get('/Productos','ProductosController@index')->name('productos');
