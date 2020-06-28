@@ -17,7 +17,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="tablaProductos">
+                    <table class="table table-bordered table-hover" id="tablaProductos">
                         <thead class="table-dark">
                             <tr>
                                 <th style="width: 50%;">Descripcion</th>

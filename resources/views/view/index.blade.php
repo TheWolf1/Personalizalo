@@ -158,13 +158,16 @@
             </div>
               <div class="form-group">
                 <label for="txtTelefonoID">Articulo:</label>
-                <select class="form-control" name="" id="">
-                    <option  value="valor1">Articulo</option>
+                <select class="form-control" name="txtPedido" id="productoPut">
+                    <option  value="--Seleccionar" selected>--Seleccionar</option>
+                  @foreach ($productos as $producto)
+                    <option  value="{{$producto['descripcion']}}">{{$producto['descripcion']}}</option>
+                  @endforeach
                 </select>
             </div>
             <div class="form-group pad">
                 <div class="mb-3">
-                    <textarea class="textarea" name="txtDescripcion" id="txtDescripcionID" placeholder="Ingrese la descripcion"
+                    <textarea class="textarea" id="txtDescripcionID" placeholder="Ingrese la descripcion"
                               style="width: 100%; height: 500px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
                 </div>
             </div>
@@ -230,6 +233,7 @@
 <!-- Summernote -->
 <script src="{{asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
 <script>
+  var articulos= new Array();
   $(document).ready(function(){
       $.datepicker.regional['es'] = {
         closeText: 'Cerrar',
@@ -263,7 +267,8 @@
     //Ingreso de usuarios
     $("#formPedido").submit(function(e){
       e.preventDefault();
-      var datos = $("#formPedido").serialize();
+      var descri = $(".note-editable").html();
+      var datos = $("#formPedido").serialize()+"&txtContent="+descri;
       $.ajax({
         url: '{{route("ingresarPedido")}}',
         type:'POST',
@@ -284,12 +289,36 @@
         }
       });
     });
-    $(".estadoMain").click(function(){
-      if ($(".estadoSelector").is(":visible")) {
-        $(".estadoSelector").hide('long');
+
+    //Agregar un producto a el textarea
+    var A_articulos = new Array();
+    $("#productoPut").change(function(){
+      if(articulos.indexOf($("#productoPut").val())<0){
+        articulos.push($("#productoPut").val());
+        A_articulos.push({
+          'producto':$("#productoPut").val(),
+          'cantidad':1
+        });
+        let datos = "<li>"+$("#productoPut").val()+"</li>";
+        $(".note-editable").html("");
+        A_articulos.forEach((value,index)=>{
+          $(".note-editable").append('<li>'+value.producto+' Cantidad: '+value.cantidad+'</li>');
+        });
+        $("#productoPut").val("--Seleccionar");
       }else{
-        $(".estadoSelector").show('long');
+        A_articulos.forEach((value, index)=>{
+          if(value.producto==$("#productoPut").val()){
+            A_articulos[index].cantidad+=1;
+          }
+        });
+        $(".note-editable").html("");
+        A_articulos.forEach((value,index)=>{
+          $(".note-editable").append('<li>'+value.producto+' Cantidad: '+value.cantidad+'</li>');
+        });
+        $("#productoPut").val("--Seleccionar");
       }
+      
+
     });
     
 });

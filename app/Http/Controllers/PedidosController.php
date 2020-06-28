@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Pedido;
+use App\Productos;
 use Illuminate\Support\Facades\DB;
 
 class PedidosController extends Controller
@@ -16,8 +17,9 @@ class PedidosController extends Controller
     public function index()
     {
         //
+        $productos = Productos::all();
         $pedidos = Pedido::all();
-        return view('view/index',compact('pedidos'));
+        return view('view/index',compact('pedidos','productos'));
     }
 
     /**
@@ -38,7 +40,7 @@ class PedidosController extends Controller
         $nuevo_pedido->cedula = $request['txtCedula'];
         $nuevo_pedido->telefono = $request['txtTelefono'];
         $nuevo_pedido->fecha = $request['txtFecha'];
-        $nuevo_pedido->descripcion = $request['txtDescripcion'];
+        $nuevo_pedido->descripcion = $request['txtContent'];
         $nuevo_pedido->abono = $request['txtAbono'];
         $nuevo_pedido->total = $request['txtTotal'];
         $nuevo_pedido->estado = "Pendiente";
