@@ -103,7 +103,7 @@
               <form id="formMostrarDetalleProducto">
                     @csrf
                     <div class="row">
-                            <input class="form-control" type="text" name="txtID" id="txtID" disabled >
+                            <input class="form-control" type="text" name="txtID" id="txtID" disabled hidden>
                         <div class="form-group col-8">
                             <label for="">Detalle:</label>
                             <input class="form-control" type="text" name="txtDetalle" id="txtDetalleID" disabled>

@@ -40,7 +40,7 @@ class PedidosController extends Controller
             $nuevo_pedido->descripcion = $request['txtContent'];
             $nuevo_pedido->abono = $request['txtAbono'];
             $nuevo_pedido->total = $request['txtTotal'];
-            $nuevo_pedido->estado = "Pendiente";
+            $nuevo_pedido->estado = $request['EstadoPedido'];
             $nuevo_pedido->save();
             $miJson = json_decode($request['arProd'],true);
             //return  "el Json es:".implode("|",$miJson);
@@ -68,6 +68,12 @@ class PedidosController extends Controller
     public function mostrarDetalle(Request $request){
         $pedido = Pedido::all()->where('id','=',$request['id'])->first();
         return json_encode($pedido);
+    }
+
+    public function ActualizarEstado(Request $request)
+    {
+        # code...
+        Pedido::where('id',$request['id'])->update(['estado'=>$request['Estado']]);
     }
 
     /**

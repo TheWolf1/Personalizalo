@@ -10,11 +10,10 @@
       #nuevoCliente{
           float: right;
       }
-      #DetallePedido b{
-        margin-right: 5px;
-      }
-      #EstadoProceso select{
-        widows: 100%;
+
+      #EstadosID{
+          width: 100%;
+          border:1px solid #ccc;
       }
 
   </style>
@@ -106,12 +105,18 @@
                     @foreach ($pedidos as $pedido)
                        <tr>
                            <td>{{$pedido->nombre}}</td>
-                           <td>{{$pedido->fecha}}</td>
-                           <td>
-                            
+                           <td style="width: 20%;">{{$pedido->fecha}}</td>
+                           <td style="width: 20%;" id="{{$pedido->id}}">
+                            <select class="form-control slcEstados" name="" id="EstadosID">
+                              <option value="" disabled>--Seleccionar</option>
+                              <option value="Pendiente" <?php if($pedido->estado=="Pendiente"){echo "selected";} ?>>Pendiente</option>
+                              <option value="En_Proceso" <?php if($pedido->estado=="En_Proceso"){echo "selected";} ?>>En Proceso</option>
+                              <option value="Listo" <?php if($pedido->estado=="Listo"){echo "selected";} ?>>Listo</option>
+                              <option value="Entregado" <?php if($pedido->estado=="Entregado"){echo "selected";} ?>>Entregado</option>
+                            </select>
                            </td>
-                           <td><button class="btn btn-info align-self-center" style="display:flex; margin:0 auto; " onclick="mostrarDetalle({{$pedido->id}})"><i class="fa fa-pen" style="font-size:20px;"></i></button></td>
-                           <td><button class="btn btn-danger align-self-center" style="display:flex; margin:0 auto; "><i class="fa fa-trash" style="font-size:20px;"></i></button></td>
+                           <td style="width: 10%;"><button class="btn btn-info align-self-center" style="display:flex; margin:0 auto; " onclick="mostrarDetalle({{$pedido->id}})"><i class="fa fa-pen" style="font-size:20px;"></i></button></td>
+                           <td style="width: 10%;"><button class="btn btn-danger align-self-center" style="display:flex; margin:0 auto; "><i class="fa fa-trash" style="font-size:20px;"></i></button></td>
                        </tr>
                       @endforeach
                    </tbody>
@@ -183,6 +188,16 @@
                 </div>
             </div>
             </div>
+            <div class="form-group">
+              <label for="">Estado:</label>
+              <select class="form-control" name="EstadoPedido" id="EstadoPedidoID">
+                <option value="">--Seleccionar</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="En_Proceso">En Proceso</option>
+                <option value="Listo">Listo</option>
+                <option value="Entregado">Entregado</option>
+              </select>
+            </div>
           
         </div>
         <div class="modal-footer justify-content-between">
@@ -233,8 +248,8 @@
 <!-- Summernote -->
 <script src="{{asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
 <script>
-  var articulos= new Array();
   $(document).ready(function(){
+      validarEstadoPedido();
       $.datepicker.regional['es'] = {
         closeText: 'Cerrar',
         prevText: '< Ant',
@@ -266,7 +281,6 @@
     });
     //Ingreso de pedido
     $("#formPedido").submit(function(e){
-      e.preventDefault();
       var descri = $(".note-editable").html();
       var datos = $("#formPedido").serialize()+"&txtContent="+descri+"&arProd="+JSON.stringify(A_articulos);
 
@@ -276,18 +290,22 @@
         dataType:'JSON',
         data:datos,
         success:function(response){
+          $("#tablaPedidosID").load(" #tablaPedidosID");
           $("#modal-IngresarCL").modal('hide');
           $("#formPedido input").val("");
           $(".note-editable").html("");
-          $("#tablaPedidosID").load(" #tablaPedidosID");
         },
         error:function(error){
           alert("A ocurrido un error: "+error);
+        },
+        complete:function(){
+          validarEstadoPedido();
         }
       });
     });
 
     //Agregar un producto a el textarea
+    var articulos= new Array();
     var A_articulos = new Array();
     $("#productoPut").change(function(){
       if(articulos.indexOf($("#productoPut").val())<0){
@@ -314,11 +332,47 @@
         });
         $("#productoPut").val("--Seleccionar");
       }
-      
-
+    });
+    //validar estado del pedido
+    $(".slcEstados").change(function(e){
+      let datos = "id="+$(this).parent()[0].id+"&Estado="+$(this).val();
+      $.ajax({
+        type:'GET',
+        url:"{{route('actualizarEstado')}}",
+        data:datos,
+        success:function(response){
+          validarEstadoPedido();
+        },
+        error:function(error){
+          alert("lo sentimos a ocurrido un error: "+error);
+        }
+      });
     });
     
+    function validarEstadoPedido(){
+      let estado = $(".slcEstados");
+      for (let i = 0; i < estado.length; i++) {
+        if (estado[i].value=="Pendiente") {
+          estado[i].style.background = "#dc3545";
+          estado[i].style.color = "#ffffff";
+        }
+        if (estado[i].value=="En_Proceso") {
+          estado[i].style.background = "#ffc107";
+          estado[i].style.color = "#ffffff";
+        }
+        if (estado[i].value=="Listo") {
+          estado[i].style.background = "#17a2b8";
+          estado[i].style.color = "#ffffff";
+        }
+        if (estado[i].value=="Entregado") {
+          estado[i].style.background = "#28a745";
+          estado[i].style.color = "#ffffff";
+        }
+      }
+    }
 });
+
+
 
 //Ver detalles del pedido
 function mostrarDetalle(id){
