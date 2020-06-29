@@ -264,24 +264,21 @@
       // Summernote
       $('.textarea').summernote()
     });
-    //Ingreso de usuarios
+    //Ingreso de pedido
     $("#formPedido").submit(function(e){
       e.preventDefault();
       var descri = $(".note-editable").html();
-      var datos = $("#formPedido").serialize()+"&txtContent="+descri;
+      var datos = $("#formPedido").serialize()+"&txtContent="+descri+"&arProd="+JSON.stringify(A_articulos);
+
       $.ajax({
         url: '{{route("ingresarPedido")}}',
         type:'POST',
+        dataType:'JSON',
         data:datos,
         success:function(response){
           $("#modal-IngresarCL").modal('hide');
-          $("#txtNombreID").val("");
-          $("#txtTelefonoID").val("");
-          $("#txtFechaID").val("");
-          $("#txtDescripcionID").val("");
-          $("#txtCedulaID").val("");
-          $("#txtAbonoID").val("");
-          $("#txtTotalID").val("");
+          $("#formPedido input").val("");
+          $(".note-editable").html("");
           $("#tablaPedidosID").load(" #tablaPedidosID");
         },
         error:function(error){
@@ -323,29 +320,6 @@
     
 });
 
-//Cambiar estado
-/*function cambiarEstadoPedido(){
-  var listado = $("#EstadoProceso select");
-  for (let index = 0; index < listado.length; index++) {
-    if(listado[index].value=="Pendiente"){
-      listado[index].style.background = "#dc3545";
-      listado[index].style.color = "#000000";
-    }
-    if(listado[index].value=="En proceso"){
-      listado[index].style.background = "#ffc107";
-      listado[index].style.color = "#000000";
-    }
-    if(listado[index].value=="Listo"){
-      listado[index].style.background = "#17a2b8";
-      listado[index].style.color = "#000000";
-    }
-    if(listado[index].value=="Entregado"){
-      listado[index].style.background = "#28a745";
-      listado[index].style.color = "#000000";
-    }
-  }
-}*/
-
 //Ver detalles del pedido
 function mostrarDetalle(id){
   let dato = 'id='+id; 
@@ -355,13 +329,7 @@ function mostrarDetalle(id){
     data:dato,
     dataType:'json',
     success:function(e){
-      $("#DetalleNombreID").html("");
-      $("#DetalleCedulaID").html("");
-      $("#DetalleTelefonoID").html("");
-      $("#DetalleFechaID").html("");
-      $("#DetalleDescripcionID").html("");
-      $("#DetalleAbonoID").html("");
-      $("#DetalleTotalID").html("");
+      $("#DetallePedido span").html("");
       $("#DetalleNombreID").append(e.nombre);
       $("#DetalleCedulaID").append(e.cedula);
       $("#DetalleTelefonoID").append(e.telefono);

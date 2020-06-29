@@ -13,11 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
+//Pagina principal
 Route::get('/', 'Pedidoscontroller@index')->name('index');
 Route::post('/ingresarPedido','Pedidoscontroller@create')->name('ingresarPedido');
 Route::get('/mostrarPedido','Pedidoscontroller@mostrarDetalle')->name('mostrarPedido');
 
 
 
+
+//Pagina de productos
 Route::get('/Productos','ProductosController@index')->name('productos');
 Route::post('/ingresarProducto','ProductosController@create')->name('ingresarProducto');
+Route::get('/DetalleProductos','ProductosController@mostrarProducto')->name('detalleProductos');
+Route::post('/ActualizarProducto','ProductosController@actualizarProducto')->name('ActualizarProducto');

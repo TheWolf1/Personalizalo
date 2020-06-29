@@ -30,24 +30,41 @@ class PedidosController extends Controller
     public function create(Request $request)
     {
         //
-       /* $New_pedido = DB::table('pedido')->insert([
-            'nombre'=>$request['txtNombre'],
-            'cedula'=>$request['txtCedula'],
-            'telefono'=>$request['txtTelefono']
-        ]);*/
-        $nuevo_pedido = new Pedido;
-        $nuevo_pedido->nombre = $request['txtNombre'];
-        $nuevo_pedido->cedula = $request['txtCedula'];
-        $nuevo_pedido->telefono = $request['txtTelefono'];
-        $nuevo_pedido->fecha = $request['txtFecha'];
-        $nuevo_pedido->descripcion = $request['txtContent'];
-        $nuevo_pedido->abono = $request['txtAbono'];
-        $nuevo_pedido->total = $request['txtTotal'];
-        $nuevo_pedido->estado = "Pendiente";
-        $nuevo_pedido->save();
-
-        return "se guardo correctamente";
+        try {
+            //code...
+            $nuevo_pedido = new Pedido;
+            $nuevo_pedido->nombre = $request['txtNombre'];
+            $nuevo_pedido->cedula = $request['txtCedula'];
+            $nuevo_pedido->telefono = $request['txtTelefono'];
+            $nuevo_pedido->fecha = $request['txtFecha'];
+            $nuevo_pedido->descripcion = $request['txtContent'];
+            $nuevo_pedido->abono = $request['txtAbono'];
+            $nuevo_pedido->total = $request['txtTotal'];
+            $nuevo_pedido->estado = "Pendiente";
+            $nuevo_pedido->save();
+            $miJson = json_decode($request['arProd'],true);
+            //return  "el Json es:".implode("|",$miJson);
+            foreach ($miJson as $key) {
+                # code...
+                $cantidad = Productos::select('cantidad')->where('descripcion','=',$key['producto'])->first()->get();
+                foreach ($cantidad as $cant) {
+                    # code...
+                    $suma = $cant->cantidad - $key['cantidad'];
+                    Productos::where('descripcion','=',$key['producto'])->update(['cantidad'=>$suma]);
+                }
+                
+            }
+            return response()->json([
+                'mensaje'=>"se guardo correctamente",
+                'json'=> $suma 
+            ],200);
+        } catch (PDOException $e) {
+            //throw $th;
+            return response()->json(['a ocurrido un error: '.$e],200);
+        }
+        
     }
+
     public function mostrarDetalle(Request $request){
         $pedido = Pedido::all()->where('id','=',$request['id'])->first();
         return json_encode($pedido);

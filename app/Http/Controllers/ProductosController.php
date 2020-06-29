@@ -36,6 +36,39 @@ class ProductosController extends Controller
         return "todo salio bien".$request['txtDescripcion'];
     }
 
+    public function mostrarProducto(Request $request)
+    {
+        # code...
+        $prod = Productos::where('id','=',$request['id'])->get();
+
+        return response()->json([
+            'mensaje'=>'todo salio bien',
+            'valor' => $prod
+        ],200);
+    }
+
+
+    public function actualizarProducto(Request $request)
+    {
+        # code...
+        try {
+            //code...
+            Productos::where('id',$request['txtID'])->update([
+                'descripcion'=>$request['txtDetalle'],
+                'cantidad' =>$request['txtCantidad'],
+                'costo' =>$request['txtCosto'],
+                'precio' =>$request['txtPrecio']
+                ]);
+            return "todo salio bien ".$request['txtID'];
+        } catch (\Throwable $th) {
+            //throw $th;
+            return "error: ".$th;
+        }
+
+        return "el id es: ".$request['txtID'];
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *
