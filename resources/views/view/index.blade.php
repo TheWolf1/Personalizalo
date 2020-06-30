@@ -272,28 +272,11 @@
 <!-- Summernote -->
 <script src="{{asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
 <script>
+    var articulos= new Array();
+    var A_articulos = new Array();
   $(document).ready(function(){
-      function validarEstadoPedido(){
-        let estado = $(".slcEstados");
-        for (let i = 0; i < estado.length; i++) {
-          if (estado[i].value=="Pendiente") {
-            estado[i].style.background = "#dc3545";
-            estado[i].style.color = "#ffffff";
-          }
-          if (estado[i].value=="En_Proceso") {
-            estado[i].style.background = "#ffc107";
-            estado[i].style.color = "#ffffff";
-          }
-          if (estado[i].value=="Listo") {
-            estado[i].style.background = "#17a2b8";
-            estado[i].style.color = "#ffffff";
-          }
-          if (estado[i].value=="Entregado") {
-            estado[i].style.background = "#28a745";
-            estado[i].style.color = "#ffffff";
-          }
-        }
-      }
+
+ 
       validarEstadoPedido();
       $.datepicker.regional['es'] = {
         closeText: 'Cerrar',
@@ -324,15 +307,36 @@
       // Summernote
       $('.textarea').summernote()
     });
+ 
+  function validarEstadoPedido(){
+        let estado = $(".slcEstados");
+        for (let i = 0; i < estado.length; i++) {
+          if (estado[i].value=="Pendiente") {
+            estado[i].style.background = "#dc3545";
+            estado[i].style.color = "#ffffff";
+          }
+          if (estado[i].value=="En_Proceso") {
+            estado[i].style.background = "#ffc107";
+            estado[i].style.color = "#ffffff";
+          }
+          if (estado[i].value=="Listo") {
+            estado[i].style.background = "#17a2b8";
+            estado[i].style.color = "#ffffff";
+          }
+          if (estado[i].value=="Entregado") {
+            estado[i].style.background = "#28a745";
+            estado[i].style.color = "#ffffff";
+          }
+        }
+      } 
     //Ingreso de pedido
     $("#formPedido").submit(function(e){
-      e.preventDefault();
+      //e.preventDefault();
       var descri = $(".note-editable").html();
       var datos = $("#formPedido").serialize()+"&txtContent="+descri+"&arProd="+JSON.stringify(A_articulos);
       $.ajax({
         url: '{{route("ingresarPedido")}}',
-        type:'POST',
-        dataType:'JSON',
+        type:'post',
         data:datos,
         success:function(e){
           $("#tablaPedidosID").load(" #tablaPedidosID");
@@ -342,6 +346,7 @@
           $("#modal-IngresarCL").modal('hide');
           $("#formPedido input").val("");
           $(".note-editable").html("");
+          A_articulos=[];
         },
         error:function(error){
           alert("A ocurrido un error: "+error);
@@ -350,9 +355,8 @@
     });
 
     //Agregar un producto a el textarea
-    var articulos= new Array();
-    var A_articulos = new Array();
-    $("#productoPut").change(function(){
+
+   $("#productoPut").change(function(){
       if(articulos.indexOf($("#productoPut").val())<0){
         articulos.push($("#productoPut").val());
         A_articulos.push({
@@ -379,7 +383,7 @@
       }
     });
     //validar estado del pedido
-    $(".slcEstados").change(function(e){
+   $(".slcEstados").change(function(e){
       e.preventDefault();
       let datos = "id="+$(this).parent()[0].id+"&Estado="+$(this).val();
       $.ajax({
@@ -404,17 +408,20 @@
     $("#modalEliminarPedido").modal('show');
     
    });
-   $("#btnEliminarID-2").click(function(){
+
+   $("#btnEliminarID-2").click(function(e){
+     e.preventDefault();
       let datos ="id="+idEliminarPedido.val();
       $.ajax({
         url:"{{route('eliminarPedido')}}",
         type:'GET',
         data:datos,
         success:function(response){
-          $("#tablaPedidosID").load(" #tablaPedidosID");
+          window.location.reload();
+          console.log(response);
           setTimeout(() => {
             validarEstadoPedido()
-          }, 300);
+          }, 500);
           $("#modalEliminarPedido").modal('hide');
         },
         error:function(e){

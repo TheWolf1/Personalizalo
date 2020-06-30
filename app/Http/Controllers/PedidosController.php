@@ -54,10 +54,6 @@ class PedidosController extends Controller
                 }
                 
             }
-            return response()->json([
-                'mensaje'=>"se guardo correctamente",
-                'Rjson'=> $cantidad 
-            ],200);
         } catch (PDOException $e) {
             //throw $th;
             return response()->json(['a ocurrido un error: '.$e],200);
