@@ -85,7 +85,7 @@
 <div class="row">
     <div class="card card-success card-outline col-12">
         <div class="card-header">
-            <h3>Pedidos</h3>
+            <h3>Pedidos HP</h3>
             <button class="btn btn-success" id="nuevoCliente" data-toggle="modal" data-target="#modal-IngresarCL" >Ingresar Nuevo Cliente</button>
         </div>
         <div class="card-body">
