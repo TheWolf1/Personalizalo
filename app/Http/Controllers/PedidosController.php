@@ -18,7 +18,7 @@ class PedidosController extends Controller
     {
         //
         $productos = Productos::all();
-        $pedidos = Pedido::all();
+        $pedidos = Pedido::where('estado','<>','Entregado')->get();
         return view('view/index',compact('pedidos','productos'));
     }
 
