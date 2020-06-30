@@ -50,19 +50,19 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fas fa-shopping-basket nav-icon"></i>
                   <p>Materia prima</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fa fa-smile nav-icon"></i>
                   <p>Expuestos</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fa fa-check nav-icon"></i>
                   <p>Productos Entregados</p>
                 </a>
               </li>
