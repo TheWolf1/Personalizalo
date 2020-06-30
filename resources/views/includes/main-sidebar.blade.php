@@ -49,7 +49,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('Materia-prima')}}" class="nav-link">
                   <i class="fas fa-shopping-basket nav-icon"></i>
                   <p>Materia prima</p>
                 </a>

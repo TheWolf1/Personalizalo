@@ -31,6 +31,9 @@ Route::group(["prefix"=>'admin'],function()
     Route::post('/ingresarProducto','ProductosController@create')->name('ingresarProducto');
     Route::get('/DetalleProductos','ProductosController@mostrarProducto')->name('detalleProductos');
     Route::post('/ActualizarProducto','ProductosController@actualizarProducto')->name('ActualizarProducto');
+
+    //Pagina materia prima
+    Route::get('Materia-prima', 'MateriaPrimaController@index')->name('Materia-prima');
 });
 
 
