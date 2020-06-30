@@ -281,15 +281,16 @@
     });
     //Ingreso de pedido
     $("#formPedido").submit(function(e){
+      e.preventDefault();
       var descri = $(".note-editable").html();
       var datos = $("#formPedido").serialize()+"&txtContent="+descri+"&arProd="+JSON.stringify(A_articulos);
-
       $.ajax({
         url: '{{route("ingresarPedido")}}',
         type:'POST',
         dataType:'JSON',
         data:datos,
-        success:function(response){
+        success:function(e){
+          console.log(e);
           $("#tablaPedidosID").load(" #tablaPedidosID");
           $("#modal-IngresarCL").modal('hide');
           $("#formPedido input").val("");
@@ -335,6 +336,7 @@
     });
     //validar estado del pedido
     $(".slcEstados").change(function(e){
+      e.preventDefault();
       let datos = "id="+$(this).parent()[0].id+"&Estado="+$(this).val();
       $.ajax({
         type:'GET',

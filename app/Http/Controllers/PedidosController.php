@@ -46,7 +46,7 @@ class PedidosController extends Controller
             //return  "el Json es:".implode("|",$miJson);
             foreach ($miJson as $key) {
                 # code...
-                $cantidad = Productos::select('cantidad')->where('descripcion','=',$key['producto'])->first()->get();
+                $cantidad = Productos::select('cantidad')->where('descripcion','=',$key['producto'])->get();
                 foreach ($cantidad as $cant) {
                     # code...
                     $suma = $cant->cantidad - $key['cantidad'];
@@ -56,7 +56,7 @@ class PedidosController extends Controller
             }
             return response()->json([
                 'mensaje'=>"se guardo correctamente",
-                'json'=> $suma 
+                'Rjson'=> $cantidad 
             ],200);
         } catch (PDOException $e) {
             //throw $th;
