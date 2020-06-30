@@ -76,6 +76,11 @@ class PedidosController extends Controller
         Pedido::where('id',$request['id'])->update(['estado'=>$request['Estado']]);
     }
 
+    public function eliminarPedido(Request $request)
+    {
+        # code...
+        Pedido::where('id',$request['id'])->delete();
+    }
     /**
      * Store a newly created resource in storage.
      *

@@ -85,7 +85,7 @@
 <div class="row">
     <div class="card card-success card-outline col-12">
         <div class="card-header">
-            <h3>Pedidos HP</h3>
+            <h3>Pedidos</h3>
             <button class="btn btn-success" id="nuevoCliente" data-toggle="modal" data-target="#modal-IngresarCL" >Ingresar Nuevo Cliente</button>
         </div>
         <div class="card-body">
@@ -116,7 +116,7 @@
                             </select>
                            </td>
                            <td style="width: 10%;"><button class="btn btn-info align-self-center" style="display:flex; margin:0 auto; " onclick="mostrarDetalle({{$pedido->id}})"><i class="fa fa-pen" style="font-size:20px;"></i></button></td>
-                           <td style="width: 10%;"><button class="btn btn-danger align-self-center" style="display:flex; margin:0 auto; "><i class="fa fa-trash" style="font-size:20px;"></i></button></td>
+                          <td style="width: 10%;"><button class="btn btn-danger align-self-center btnEliminar" id="{{$pedido->id}}" style="display:flex; margin:0 auto; "><i class="fa fa-trash" style="font-size:20px;"></i></button></td>
                        </tr>
                       @endforeach
                    </tbody>
@@ -240,6 +240,30 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
+
+<!-- Alerta de eliminacion de pedido -->
+<div class="modal fade" id="modalEliminarPedido">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content bg-danger">
+      <div class="modal-header">
+        <h4 class="modal-title">Advertencia</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="DetallePedido">
+       ¿Seguro deseas eliminar este pedido?
+       <input type="text" disabled hidden>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-default" id="btnEliminarID-2">Si, Eliminar</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
 @endsection
 
 @section('scripts')
@@ -249,6 +273,27 @@
 <script src="{{asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
 <script>
   $(document).ready(function(){
+      function validarEstadoPedido(){
+        let estado = $(".slcEstados");
+        for (let i = 0; i < estado.length; i++) {
+          if (estado[i].value=="Pendiente") {
+            estado[i].style.background = "#dc3545";
+            estado[i].style.color = "#ffffff";
+          }
+          if (estado[i].value=="En_Proceso") {
+            estado[i].style.background = "#ffc107";
+            estado[i].style.color = "#ffffff";
+          }
+          if (estado[i].value=="Listo") {
+            estado[i].style.background = "#17a2b8";
+            estado[i].style.color = "#ffffff";
+          }
+          if (estado[i].value=="Entregado") {
+            estado[i].style.background = "#28a745";
+            estado[i].style.color = "#ffffff";
+          }
+        }
+      }
       validarEstadoPedido();
       $.datepicker.regional['es'] = {
         closeText: 'Cerrar',
@@ -290,17 +335,16 @@
         dataType:'JSON',
         data:datos,
         success:function(e){
-          console.log(e);
           $("#tablaPedidosID").load(" #tablaPedidosID");
+          setTimeout(() => {
+            validarEstadoPedido()
+          }, 300);
           $("#modal-IngresarCL").modal('hide');
           $("#formPedido input").val("");
           $(".note-editable").html("");
         },
         error:function(error){
           alert("A ocurrido un error: "+error);
-        },
-        complete:function(){
-          validarEstadoPedido();
         }
       });
     });
@@ -343,36 +387,43 @@
         url:"{{route('actualizarEstado')}}",
         data:datos,
         success:function(response){
-          validarEstadoPedido();
+          setTimeout(() => {
+            validarEstadoPedido();
+          }, 300);
         },
         error:function(error){
           alert("lo sentimos a ocurrido un error: "+error);
-        }
+        },
       });
     });
+
+   //Eliminar pedido
+   var idEliminarPedido;
+   $(".btnEliminar").click(function(values){
+    idEliminarPedido = $("#modalEliminarPedido input").val(values.currentTarget.id);
+    $("#modalEliminarPedido").modal('show');
     
-    function validarEstadoPedido(){
-      let estado = $(".slcEstados");
-      for (let i = 0; i < estado.length; i++) {
-        if (estado[i].value=="Pendiente") {
-          estado[i].style.background = "#dc3545";
-          estado[i].style.color = "#ffffff";
+   });
+   $("#btnEliminarID-2").click(function(){
+      let datos ="id="+idEliminarPedido.val();
+      $.ajax({
+        url:"{{route('eliminarPedido')}}",
+        type:'GET',
+        data:datos,
+        success:function(response){
+          $("#tablaPedidosID").load(" #tablaPedidosID");
+          setTimeout(() => {
+            validarEstadoPedido()
+          }, 300);
+          $("#modalEliminarPedido").modal('hide');
+        },
+        error:function(e){
+          console.log("error: "+e);
         }
-        if (estado[i].value=="En_Proceso") {
-          estado[i].style.background = "#ffc107";
-          estado[i].style.color = "#ffffff";
-        }
-        if (estado[i].value=="Listo") {
-          estado[i].style.background = "#17a2b8";
-          estado[i].style.color = "#ffffff";
-        }
-        if (estado[i].value=="Entregado") {
-          estado[i].style.background = "#28a745";
-          estado[i].style.color = "#ffffff";
-        }
-      }
-    }
+      });
+   });
 });
+//fin ready
 
 
 
@@ -395,8 +446,8 @@ function mostrarDetalle(id){
       $("#DetalleTotalID").append(e.total);
       $("#modal-lg").modal('show');
     },
-    error:function(){
-      console.log("a ocurrido un error");
+    error:function(e){
+      console.log("a ocurrido un error"+e);
     }
   }); 
 }

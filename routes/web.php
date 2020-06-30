@@ -20,6 +20,7 @@ Route::get('/', 'Pedidoscontroller@index')->name('index');
 Route::post('/ingresarPedido','Pedidoscontroller@create')->name('ingresarPedido');
 Route::get('/mostrarPedido','Pedidoscontroller@mostrarDetalle')->name('mostrarPedido');
 Route::get('/actualizarEstado','Pedidoscontroller@ActualizarEstado')->name('actualizarEstado');
+Route::get('eliminarPedido','Pedidoscontroller@eliminarPedido')->name('eliminarPedido');
 
 
 
