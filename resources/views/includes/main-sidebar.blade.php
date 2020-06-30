@@ -41,6 +41,42 @@
           </li>
           <li class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-archive"></i>
+              <p>
+                Articulos
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Materia prima</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Expuestos</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Productos Entregados</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="fa fa-arrow-down nav-icon"></i>
+                  <p>Dados de baja</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!--
+          <li class="nav-item has-treeview menu-open">
+            <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Starter Pages
@@ -62,12 +98,20 @@
               </li>
             </ul>
           </li>
+        -->
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-users"></i>
               <p>
-                Simple Link
-                <span class="right badge badge-danger">New</span>
+                Usuarios
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-cogs"></i>
+              <p>
+                Configuraciones
               </p>
             </a>
           </li>

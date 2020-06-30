@@ -94,7 +94,7 @@
                    <thead class="table-dark">
                        <tr>
                            <th>Nombre</th>
-                           <th>Fecha</th>
+                           <th>Fecha de entrega</th>
                            <th>Estado</th>
                            <th>Detalles</th>
                            <th>Eliminar</th>
