@@ -41,6 +41,9 @@ Route::group(["prefix"=>'admin'],function()
     //Productos expuestos
     Route::get('/Productos-Expuestos','ProductoExpuestoController@index')->name('Productos-Expuestos');
     Route::post('/Ingresar-Productos-Expuestos', 'ProductoExpuestoController@create')->name('Ingresar-Productos-Expuestos');
+
+    //Productos entregados
+    Route::get('/Productos-Entregados','ProductoEntregadoController@index')->name('Productos-Entregados');
 });
 
 

@@ -24,22 +24,7 @@
 @endsection
 
 @section('contenido')
-<div class="row">
-    <div class="col-lg-3 col-6">
-      <!-- small box -->
-      <div class="small-box bg-success">
-        <div class="inner">
-          <h3>20<sup style="font-size: 20px">%</sup></h3>
-
-          <p>Entregado</p>
-        </div>
-        <div class="icon">
-          <i class="fa fa-bicycle"></i>
-        </div>
-        
-      </div>
-    </div>
-    <!-- ./col -->
+<div class="row" style="justify-content: center;">
     <div class="col-lg-3 col-6">
       <!-- small box -->
       <div class="small-box bg-info">
