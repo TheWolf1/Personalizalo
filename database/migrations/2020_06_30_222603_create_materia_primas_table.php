@@ -15,6 +15,9 @@ class CreateMateriaPrimasTable extends Migration
     {
         Schema::create('materia_primas', function (Blueprint $table) {
             $table->id();
+            $table->string('descripcion',70);
+            $table->double('cantidad',5,2);
+            $table->double('costo',5,2);
             $table->timestamps();
         });
     }

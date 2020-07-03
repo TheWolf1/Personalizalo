@@ -33,7 +33,10 @@ Route::group(["prefix"=>'admin'],function()
     Route::post('/ActualizarProducto','ProductosController@actualizarProducto')->name('ActualizarProducto');
 
     //Pagina materia prima
-    Route::get('Materia-prima', 'MateriaPrimaController@index')->name('Materia-prima');
+    Route::get('/Materia-prima', 'MateriaPrimaController@index')->name('Materia-prima');
+    Route::post('/Ingresar-Materia', 'MateriaPrimaController@create')->name('Ingresar-Materia');
+    Route::get('/Materia-prima-D', 'MateriaPrimaController@mostrarDetalle')->name('Materia-prima-D');
+    Route::post('/ActualizarMateria','MateriaPrimaController@actualizarDetalle')->name('ActualizarMateria');
 });
 
 

@@ -1,4 +1,8 @@
 @extends('main')
+
+@section('titulo')
+    Inicio
+@endsection
 @section('styles')
     <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -85,7 +89,7 @@
 <div class="row">
     <div class="card card-success card-outline col-12">
         <div class="card-header">
-            <h3>Pedidos</h3>
+            <h3>@yield('titulo')</h3>
             <button class="btn btn-success" id="nuevoCliente" data-toggle="modal" data-target="#modal-IngresarCL" >Ingresar Nuevo Cliente</button>
         </div>
         <div class="card-body">

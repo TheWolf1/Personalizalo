@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\MateriaPrima;
 
 class MateriaPrimaController extends Controller
 {
@@ -14,7 +15,8 @@ class MateriaPrimaController extends Controller
     public function index()
     {
         //
-        return view('view/materia-prima');
+        $Materias = MateriaPrima::all();
+        return view('view/materia-prima',compact('Materias'));
     }
 
     /**
@@ -22,9 +24,40 @@ class MateriaPrimaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //
+        $query = new MateriaPrima;
+        $query->descripcion = $request['txtDescripcion'];
+        $query->costo = $request['txtCosto'];
+        $query->cantidad = $request['txtCantidad'];
+        $query->save();
+    }
+
+    public function mostrarDetalle(Request $request)
+    {
+        # code...
+        $datos = MateriaPrima::where('id',$request['id'])->get();
+        return response()->json([
+            'mensaje'=>'todo salio correcto',
+            'datos'=>$datos
+        ],200);
+    }
+
+    public function actualizarDetalle(Request $request)
+    {
+        # code...
+       try {
+           //code...
+           MateriaPrima::where('id',$request['txtIdD'])->update([
+               'descripcion'=>$request['txtDescripcionD'],
+               'cantidad'=>$request['txtCantidadD'],
+               'costo'=>$request['txtCostoD'],
+           ]);
+           return "todo salio bien:".$request['txtIdD'];
+       } catch (\Throwable $th) {
+           return "error: ".$th;
+       }
     }
 
     /**

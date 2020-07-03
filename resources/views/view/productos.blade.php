@@ -1,6 +1,8 @@
 @extends('main')
 
-
+@section('titulo')
+    Productos   
+@endsection
 @section('styles')
    <style>
        #tablaProductos tbody{
@@ -11,8 +13,8 @@
 @section('contenido')
     <div class="row">
         <div class="card card-success card-outline col-12">
-            <div class="card-head">
-                <h3>Productos</h3>
+            <div class="card-header">
+                <h3>@yield('titulo')</h3>
                 <button class="btn btn-success" style="float: right;" data-toggle="modal" data-target="#modal-lg">Crear nuevo producto</button>
             </div>
             <div class="card-body">
