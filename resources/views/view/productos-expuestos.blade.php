@@ -1,12 +1,11 @@
 @extends('main')
 @section('titulo')
-    Materia Prima
+    Productos Expuestos
 @endsection
 
 @section('styles')
     <style>
-        #TablaMateriaPrima td:nth-child(2), td:nth-child(3){
-          margin: 0 auto;
+        #TablaProductosExpuestos td:nth-child(2), td:nth-child(3){
           text-align: center;
         }
     </style>
@@ -17,57 +16,59 @@
         <div class="card card-success card-outline col-12">
             <div class="card-header ">
                 <h3>@yield('titulo')</h3>
-                <button class="btn btn-success" style="float: right;" data-toggle="modal" data-target="#modal-nuevo-articulo">Añadir nuevo elemento</button>
+                <button class="btn btn-success" style="float: right;" data-toggle="modal" data-target="#modal-nuevo-producto-Ex">Añadir nuevo elemento</button>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover table-bordered" id="TablaMateriaPrima">
+                    <table class="table table-hover table-bordered" id="TablaProductosExpuestos">
                         <thead class="table-dark">
                             <tr>
                                 <th>Descripcion</th>
-                                <th>Cantidad</th>
-                                <th>Costo</th>
+                                <th>Precio</th>
+                                <th>Vender</th>
+                                <th>Eliminar</th>
                             </tr>
                         </thead>
                         <tbody>
-                          @foreach ($Materias as $materia)
-                            <tr id="{{$materia['id']}}">
-                              <td style="width: 80%;">{{$materia['descripcion']}}</td>
-                              <td><b>{{$materia['cantidad']}}</b></td>
-                              <td><b>${{$materia['costo']}}</b></td>
-                            </tr>
-                          @endforeach
-                            
+                            @foreach ($expuestos as $expuesto)
+                                <tr id="{{$expuesto->id}}">
+                                    <td style="width: 80%;">{{$expuesto->descripcion}}</td>
+                                    <td><b>${{$expuesto->precio}}</b></td>
+                                    <td><button class="btn btn-success"><i class="fa fa-credit-card"></i></button></td>
+                                    <td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
+                                </tr>                                
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-    <!--Modal Ingresar nuevo elemento-->
-    <div class="modal fade" id="modal-nuevo-articulo">
+    <!--Modal Ingresar nuevo Producto-->
+    <div class="modal fade" id="modal-nuevo-producto-Ex">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Ingresar nuevo articulo</h4>
+              <h4 class="modal-title">Ingresar nuevo Producto</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <form action="#" id="formMateriaPrima">
+              <form id="formProductoExpuesto">
                 @csrf
                 <div class="form-group">
                   <label for="">Descripcion:</label>
-                  <input type="text" class="form-control" name="txtDescripcion" id="ID" placeholder="Ejemplo: Tabla MDF 1x2M">
+                  <select class="form-control" name="slcDescripcion" id="">
+                      <option value="">--Seleccionar</option>
+                      @foreach ($productos as $producto)
+                          <option  value="{{$producto['descripcion']}}">{{$producto['descripcion']}}</option>
+                      @endforeach
+                  </select>
                 </div>
                 <div class="form-group">
-                  <label for="">Cantidad:</label>
-                  <input type="text" class="form-control col-2" name="txtCantidad" id="ID" placeholder="Ejemplo:8.50">
-                </div>
-                <div class="form-group">
-                  <label for="">Costo:</label>
-                  <input type="text" class="form-control col-2" name="txtCosto" id="ID" placeholder="Ejemplo:8.50">
+                  <label for="">Precio:</label>
+                  <input type="text" class="form-control col-2" name="txtPrecio" id="ID" placeholder="Ejemplo:8.50">
                 </div>
               
             </div>
@@ -126,18 +127,18 @@
 @section('scripts')
 <script>
 $(document).ready(function(){
-
   //Ingresar materia prima
-  $("#formMateriaPrima").submit((e)=>{
+  $("#formProductoExpuesto").submit((e)=>{
     e.preventDefault();
-    datos = $("#formMateriaPrima").serialize();
+    datos = $("#formProductoExpuesto").serialize();
     $.ajax({
-      url:"{{route('Ingresar-Materia')}}",
+      url:"{{route('Ingresar-Productos-Expuestos')}}",
       type:'POST',
       data:datos,
       success:function(response){
-        $("#TablaMateriaPrima").load(" #TablaMateriaPrima");
-        $("#modal-nuevo-articulo").modal('hide');
+          console.log(response);
+        $("#TablaProductosExpuestos").load(" #TablaProductosExpuestos");
+        $("#modal-nuevo-producto-Ex").modal('hide');
       },
       error:function(e){
         console.log("Lo sentimos a ocurrido un error: "+e);
@@ -145,9 +146,8 @@ $(document).ready(function(){
       
     });
   });
-
   //Mostrar detalle
-  $("#TablaMateriaPrima tbody tr").click((v)=>{
+ $("#TablaMateriaPrima tbody tr").click((v)=>{
     let id = v.currentTarget.id; 
     let datos = "id="+id;
     $.ajax({
@@ -191,7 +191,12 @@ $(document).ready(function(){
     });
   });
 });
-</script>
 
+</script>
 @endsection
+
+
+
+
+
 

@@ -55,7 +55,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('Productos-Expuestos')}}" class="nav-link">
                   <i class="fa fa-smile nav-icon"></i>
                   <p>Expuestos</p>
                 </a>
