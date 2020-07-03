@@ -67,7 +67,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('Dados-de-baja')}}" class="nav-link">
                   <i class="fa fa-arrow-down nav-icon"></i>
                   <p>Dados de baja</p>
                 </a>

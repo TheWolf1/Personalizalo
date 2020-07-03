@@ -14,7 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
+Route::get('/', function ()
+{
+    # code...
+    return view('auth/login');
+});
 
 
 Route::group(["prefix"=>'admin'],function()
@@ -44,8 +48,16 @@ Route::group(["prefix"=>'admin'],function()
 
     //Productos entregados
     Route::get('/Productos-Entregados','ProductoEntregadoController@index')->name('Productos-Entregados');
+
+    //Productos dados de baja
+    Route::get('/Dados-de-baja','DadosBajaController@index')->name('Dados-de-baja');
 });
 
 
 
+
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
 
