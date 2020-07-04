@@ -29,7 +29,7 @@
       <!-- small box -->
       <div class="small-box bg-info">
         <div class="inner">
-          <h3>53<sup style="font-size: 20px">%</sup></h3>
+          <h3>{{$Listo}}<sup style="font-size: 20px">%</sup></h3>
 
           <p>Listo</p>
         </div>
@@ -44,7 +44,7 @@
       <!-- small box -->
       <div class="small-box bg-warning">
         <div class="inner">
-          <h3>44<sup style="font-size: 20px">%</sup></h3>
+          <h3>{{$proceso}}<sup style="font-size: 20px">%</sup></h3>
 
           <p>En proceso</p>
         </div>
@@ -59,7 +59,7 @@
       <!-- small box -->
       <div class="small-box bg-danger">
         <div class="inner">
-          <h3>65<sup style="font-size: 20px">%</sup></h3>
+          <h3>{{$pendiente}}<sup style="font-size: 20px">%</sup></h3>
 
           <p>Pendiente</p>
         </div>

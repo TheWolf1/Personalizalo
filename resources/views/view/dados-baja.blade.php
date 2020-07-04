@@ -50,11 +50,18 @@
         <div class="modal-body">
           <form id="formDarBaja">
               <div class="form-group">
-                  <label for="">Producto</label>
-                  <select class="form-control" name="" id="">
+                  <label for="">Producto:</label>
+                  <select class="form-control" name="" id="slcProd">
                       <option value="">--Seleccionar</option>
+                      @foreach ($productos as $producto)
+                      <option value="{{$producto->id}}">{{$producto->descripcion}}</option>
+                      @endforeach
                   </select>
               </div>
+              <div class="form-group">
+                <label for="">Costo:</label>
+                <input type="text" class="form-control" placeholder="Costo:">
+            </div>
           </form>
         </div>
         <div class="modal-footer justify-content-between">
@@ -69,5 +76,19 @@
   <!-- /.modal -->
 @endsection
 @section('scripts')
-    
+    <script>
+        $("#slcProd").change(function(){
+            $.ajax({
+                url:"{{route('registrar-baja')}}",
+                type:"POST",
+                data:"id="$("#slcProd").val(),
+                success:function(res){
+                    console.log(res);
+                },
+                error:function(error){
+                    console.log(error);
+                }
+            });
+        });
+    </script>
 @endsection

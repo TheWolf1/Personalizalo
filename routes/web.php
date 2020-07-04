@@ -51,6 +51,7 @@ Route::group(["prefix"=>'admin'],function()
 
     //Productos dados de baja
     Route::get('/Dados-de-baja','DadosBajaController@index')->name('Dados-de-baja');
+    Route::post('/registrar-baja','DadosBajaController@create')->name('registrar-baja');
 });
 
 

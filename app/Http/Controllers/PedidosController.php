@@ -17,9 +17,12 @@ class PedidosController extends Controller
     public function index()
     {
         //
+        $Listo = $this->porcentajesEstado('Listo');
+        $proceso = $this->porcentajesEstado('En_Proceso');
+        $pendiente = $this->porcentajesEstado('Pendiente');
         $productos = Productos::all();
         $pedidos = Pedido::where('estado','<>','Entregado')->get();
-        return view('view/index',compact('pedidos','productos'));
+        return view('view/index',compact('pedidos','productos','Listo','proceso','pendiente'));
     }
 
     /**
@@ -76,6 +79,18 @@ class PedidosController extends Controller
     {
         # code...
         Pedido::where('id',$request['id'])->delete();
+    }
+
+    public function porcentajesEstado($value)
+    {
+        # code...
+        $tot = Pedido::where('estado','<>','Entregado')->count('estado');
+        $unique = Pedido::where('estado',$value)->count('estado');
+        $sum = (100*$unique)/$tot;
+        
+        //return (float)$sum;
+        return number_format($sum,0);
+        
     }
     /**
      * Store a newly created resource in storage.

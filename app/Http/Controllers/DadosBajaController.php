@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Productos;
 
 class DadosBajaController extends Controller
 {
@@ -14,7 +15,8 @@ class DadosBajaController extends Controller
     public function index()
     {
         //
-        return view('view/dados-baja');
+        $productos = Productos::all();
+        return view('view/dados-baja',compact('productos'));
     }
 
     /**
