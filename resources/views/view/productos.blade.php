@@ -56,7 +56,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <form action="#" id="formProductosID">
+              <form action="#" id="formProductoID">
                   @csrf
                   <div class="form-group">
                       <label for="txtDescripcionID">Descripcion:</label>
@@ -156,9 +156,9 @@
     <script>
         $(document).ready(function(){
             $("#btnGuardarID").hide();
-            $("#formProductosID").submit((e)=>{
+            $("#formProductoID").submit((e)=>{
             e.preventDefault();
-            var datos = $("#formProductosID").serialize();
+            var datos = $("#formProductoID").serialize();
                 $.ajax({
                     url:"{{route('ingresarProducto')}}",
                     data:datos,
@@ -166,6 +166,7 @@
                     success:function(response){
                         $("#tablaProductos").load(" #tablaProductos");
                         $("#modal-lg").modal("hide");
+                        $("#formProductoID input").val("");
                     },
                     error:function(error){
                         console.log("error: "+error);

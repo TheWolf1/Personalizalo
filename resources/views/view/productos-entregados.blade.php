@@ -13,7 +13,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table">
+                    <table class="table" id="tblProdEntregados">
                         <thead class="table-dark">
                             <tr>
                                 <th>Nombre</th>
@@ -69,6 +69,13 @@
 @endsection
 @section('scripts')
 <script>
+  $(document).ready(function(){
+    $(".btnEliminar").click((e)=>{
+      var datos = "id="+e.currentTarget.id;
+      consultaAjax("{{route('EliminarProductoEntregado')}}", "GET", datos);
+      $("#tblProdEntregados").load(" #tblProdEntregados");
+    });
+  });
     function mostrarDetalle(id){
         let dato = 'id='+id; 
         $.ajax({

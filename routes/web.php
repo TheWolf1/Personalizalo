@@ -24,40 +24,49 @@ Route::get('/', function ()
 Route::group(["prefix"=>'admin'],function()
 {
     //Pagina principal
-    Route::get('/', 'Pedidoscontroller@index')->name('index');
-    Route::post('/ingresarPedido','Pedidoscontroller@create')->name('ingresarPedido');
-    Route::get('/mostrarPedido','Pedidoscontroller@mostrarDetalle')->name('mostrarPedido');
-    Route::get('/actualizarEstado','Pedidoscontroller@ActualizarEstado')->name('actualizarEstado');
-    Route::get('eliminarPedido','Pedidoscontroller@eliminarPedido')->name('eliminarPedido');
+    Route::get('/', 'Pedidoscontroller@index')->name('index')->middleware('auth');
+    Route::post('/ingresarPedido','Pedidoscontroller@create')->name('ingresarPedido')->middleware('auth');
+    Route::get('/mostrarPedido','Pedidoscontroller@mostrarDetalle')->name('mostrarPedido')->middleware('auth');
+    Route::get('/actualizarEstado','Pedidoscontroller@ActualizarEstado')->name('actualizarEstado')->middleware('auth');
+    Route::get('eliminarPedido','Pedidoscontroller@eliminarPedido')->name('eliminarPedido')->middleware('auth');
 
     //Pagina de productos
-    Route::get('/Productos','ProductosController@index')->name('productos');
-    Route::post('/ingresarProducto','ProductosController@create')->name('ingresarProducto');
-    Route::get('/DetalleProductos','ProductosController@mostrarProducto')->name('detalleProductos');
-    Route::post('/ActualizarProducto','ProductosController@actualizarProducto')->name('ActualizarProducto');
-    Route::get('/EliminarProducto','ProductosController@eliminarProducto')->name("EliminarProducto");
+    Route::get('/Productos','ProductosController@index')->name('productos')->middleware('auth');
+    Route::post('/ingresarProducto','ProductosController@create')->name('ingresarProducto')->middleware('auth');
+    Route::get('/DetalleProductos','ProductosController@mostrarProducto')->name('detalleProductos')->middleware('auth');
+    Route::post('/ActualizarProducto','ProductosController@actualizarProducto')->name('ActualizarProducto')->middleware('auth');
+    Route::get('/EliminarProducto','ProductosController@eliminarProducto')->name("EliminarProducto")->middleware('auth');
 
     //Pagina materia prima
-    Route::get('/Materia-prima', 'MateriaPrimaController@index')->name('Materia-prima');
-    Route::post('/Ingresar-Materia', 'MateriaPrimaController@create')->name('Ingresar-Materia');
-    Route::get('/Materia-prima-D', 'MateriaPrimaController@mostrarDetalle')->name('Materia-prima-D');
-    Route::post('/ActualizarMateria','MateriaPrimaController@actualizarDetalle')->name('ActualizarMateria');
+    Route::get('/Materia-prima', 'MateriaPrimaController@index')->name('Materia-prima')->middleware('auth');
+    Route::post('/Ingresar-Materia', 'MateriaPrimaController@create')->name('Ingresar-Materia')->middleware('auth');
+    Route::get('/Materia-prima-D', 'MateriaPrimaController@mostrarDetalle')->name('Materia-prima-D')->middleware('auth');
+    Route::post('/ActualizarMateria','MateriaPrimaController@actualizarDetalle')->name('ActualizarMateria')->middleware('auth');
+    Route::get("/eliminarMateria",'MateriaPrimaController@eliminarMateria')->name("eliminarMateria")->middleware('auth');
 
     //Productos expuestos
-    Route::get('/Productos-Expuestos','ProductoExpuestoController@index')->name('Productos-Expuestos');
-    Route::post('/Ingresar-Productos-Expuestos', 'ProductoExpuestoController@create')->name('Ingresar-Productos-Expuestos');
+    Route::get('/Productos-Expuestos','ProductoExpuestoController@index')->name('Productos-Expuestos')->middleware('auth');
+    Route::post('/Ingresar-Productos-Expuestos', 'ProductoExpuestoController@create')->name('Ingresar-Productos-Expuestos')->middleware('auth');
+    Route::get("/EliminarProductoExpuesto","ProductoExpuestoController@delete")->name('EliminarProductoExpuesto');
 
     //Productos entregados
-    Route::get('/Productos-Entregados','ProductoEntregadoController@index')->name('Productos-Entregados');
+    Route::get('/Productos-Entregados','ProductoEntregadoController@index')->name('Productos-Entregados')->middleware('auth');
+    Route::get('/EliminarProductoEntregado','ProductoEntregadoController@delete')->name("EliminarProductoEntregado")->middleware('auth');
 
     //Productos dados de baja
-    Route::get('/Dados-de-baja','DadosBajaController@index')->name('Dados-de-baja');
-    Route::post('/registrar-baja','DadosBajaController@create')->name('registrar-baja');
+    Route::get('/Dados-de-baja','DadosBajaController@index')->name('Dados-de-baja')->middleware('auth');
+    Route::post('/registrar-baja','DadosBajaController@create')->name('registrar-baja')->middleware('auth');
+    Route::get('/EliminarBaja','DadosBajaController@delete')->name('eliminar-baja')->middleware('auth');
+
+    //Usuarios
+    Route::get('/Usuarios',"UsuarioController@index")->name('Usuarios');
+
+    //Cerrar session
+    Route::get('/CerrarSession',function(){
+        Auth::logout();
+        return redirect('login');
+    })->name("cerrarSession");
 });
-
-
-
-
 
 Auth::routes();
 

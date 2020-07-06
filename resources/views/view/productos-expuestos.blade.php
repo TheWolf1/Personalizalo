@@ -34,8 +34,8 @@
                                 <tr id="{{$expuesto->id}}">
                                     <td style="width: 80%;">{{$expuesto->descripcion}}</td>
                                     <td><b>${{$expuesto->precio}}</b></td>
-                                    <td><button class="btn btn-success"><i class="fa fa-credit-card"></i></button></td>
-                                    <td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
+                                    <td><button class="btn btn-success" ><i class="fa fa-credit-card"></i></button></td>
+                                    <td><button class="btn btn-danger btnEliminarP" id="{{$expuesto->id}}"><i class="fa fa-trash"></i></button></td>
                                 </tr>                                
                             @endforeach
                         </tbody>
@@ -83,45 +83,6 @@
         <!-- /.modal-dialog -->
       </div>
       <!-- /.modal -->
-    <!--Modal Detalles de materia prima-->
-    <div class="modal fade" id="modal-detalle-materia">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Detalles</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form action="#" id="formDetalleMateria">
-              @csrf
-              <input type="text" name="txtIdD" id="txtId" hidden disabled>
-              <div class="form-group">
-                <label for="">Descripcion:</label>
-                <input type="text" class="form-control" name="txtDescripcionD" id="txtDescripcionDID" placeholder="Ejemplo: Tabla MDF 1x2M" disabled>
-              </div>
-              <div class="form-group">
-                <label for="">Cantidad:</label>
-                <input type="text" class="form-control col-2" name="txtCantidadD" id="txtCantidadDID" placeholder="Ejemplo:5.2" disabled>
-              </div>
-              <div class="form-group">
-                <label for="">Costo:</label>
-                <input type="text" class="form-control col-2" name="txtCostoD" id="txtCostoDID" placeholder="Ejemplo:8.50" disabled>
-              </div>            
-          </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-primary" id="btnEditar">Editar</button>
-            <button type="submit" class="btn btn-success" id="btnGuardarD" hidden>Guardar</button>
-          </form>
-          </div>
-        </div>
-        <!-- /.modal-content -->
-      </div>
-      <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
 @endsection
 
 @section('scripts')
@@ -129,7 +90,6 @@
 $(document).ready(function(){
   //Ingresar materia prima
   $("#formProductoExpuesto").submit((e)=>{
-    e.preventDefault();
     datos = $("#formProductoExpuesto").serialize();
     $.ajax({
       url:"{{route('Ingresar-Productos-Expuestos')}}",
@@ -190,8 +150,17 @@ $(document).ready(function(){
       }
     });
   });
+  //Eliminar producto
+  $(".btnEliminarP").click(function(e){
+    dato = "id="+e.currentTarget.id;
+    var p = confirm("Seguro deseas eliminar este producto?");
+    if (p) {
+      consultaAjax("{{route('EliminarProductoExpuesto')}}","GET", dato);
+      $("#TablaProductosExpuestos").load(" #TablaProductosExpuestos");
+    }
+    
+  });
 });
-
 </script>
 @endsection
 

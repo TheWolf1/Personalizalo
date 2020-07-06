@@ -34,6 +34,11 @@ class ProductoExpuestoController extends Controller
         $data->precio = $request->txtPrecio;
         $data->save();
     }
+    public function delete(Request $request)
+    {
+        # code...
+        ProductoExpuesto::where('id',$request->id)->delete();
+    }
 
     /**
      * Store a newly created resource in storage.

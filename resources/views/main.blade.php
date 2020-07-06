@@ -62,6 +62,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- AdminLTE App -->
 <script src="{{asset('dist/js/adminlte.min.js')}}"></script>
 <!-- My Scripts -->
+<script src="{{asset('dist/js/main.js')}}"></script>
 @yield('scripts')
 </body>
 </html>

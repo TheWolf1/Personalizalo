@@ -60,6 +60,12 @@ class MateriaPrimaController extends Controller
        }
     }
 
+    public function eliminarMateria(Request $request)
+    {
+        # code...
+        MateriaPrima::where('id',$request->id)->delete();
+    }
+
     /**
      * Store a newly created resource in storage.
      *

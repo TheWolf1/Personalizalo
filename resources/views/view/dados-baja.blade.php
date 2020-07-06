@@ -14,7 +14,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
+                    <table class="table table-bordered table-hover" id="tablaBajasID">
                         <thead class="table-dark">
                             <tr>
                                 <th style="width: 80%;">Descripcion</th>
@@ -23,13 +23,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Camisa</td>
-                                <td><b>$3</b></td>
-                                <td>
-                                    <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                                </td>
-                            </tr>
+                            @foreach ($bajas as $baja)
+                                <tr>
+                                    <td>{{$baja->producto}}</td>
+                                    <td><b>${{$baja->costo}}</b></td>
+                                    <td>
+                                        <button class="btn btn-danger btnEliminar" id="{{$baja->id}}"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            
                         </tbody>
                     </table>
                 </div>
@@ -49,25 +52,26 @@
         </div>
         <div class="modal-body">
           <form id="formDarBaja">
+              @csrf
               <div class="form-group">
                   <label for="">Producto:</label>
-                  <select class="form-control" name="" id="slcProd">
+                  <select class="form-control" name="slcProd" id="slcProd">
                       <option value="">--Seleccionar</option>
                       @foreach ($productos as $producto)
-                      <option value="{{$producto->id}}">{{$producto->descripcion}}</option>
+                      <option value="{{$producto->descripcion}}">{{$producto->descripcion}}</option>
                       @endforeach
                   </select>
               </div>
               <div class="form-group">
                 <label for="">Costo:</label>
-                <input type="text" class="form-control" placeholder="Costo:">
-            </div>
-          </form>
+                <input type="text" name="txtCosto" class="form-control" placeholder="Costo:">
+            </div>  
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="submit" class="btn btn-success">Guardar</button>
         </div>
+    </form>
       </div>
       <!-- /.modal-content -->
     </div>
@@ -77,18 +81,28 @@
 @endsection
 @section('scripts')
     <script>
-        $("#slcProd").change(function(){
-            $.ajax({
-                url:"{{route('registrar-baja')}}",
-                type:"POST",
-                data:"id="$("#slcProd").val(),
-                success:function(res){
-                    console.log(res);
-                },
-                error:function(error){
-                    console.log(error);
+        $(document).ready(function(){
+            //Crear una baja
+            $("#formDarBaja").submit(function(e){
+                e.preventDefault();
+                let datos = $("#formDarBaja").serialize();
+                consultaAjax("{{route('registrar-baja')}}","POST", datos);
+                $("#tablaBajasID").load(" #tablaBajasID");
+                $("#modal-dar-baja").modal('hide');
+                $("#formDarBaja select").val("");
+                $("#formDarBaja input").val("");
+            });
+
+            //Eliminar baja
+            $(".btnEliminar").click((e)=>{
+                var p = confirm("Seguro deseas eliminar este producto ? ");
+                if (p) {
+                    let datos = "id="+e.currentTarget.id;
+                    consultaAjax("{{route('eliminar-baja')}}","GET", datos);
+                    $("#tablaBajasID").load(" #tablaBajasID");
                 }
             });
         });
+        
     </script>
 @endsection

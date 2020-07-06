@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Productos;
-use App\DadosBaja;
-
-class DadosBajaController extends Controller
+use App\User;
+class UsuarioController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +14,8 @@ class DadosBajaController extends Controller
     public function index()
     {
         //
-        $bajas = DadosBaja::all();
-        $productos = Productos::all();
-        return view('view/dados-baja',compact('productos','bajas'));
+        $usuarios = User::all();
+        return view('view/usuario',compact('usuarios'));
     }
 
     /**
@@ -26,20 +23,11 @@ class DadosBajaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
         //
-        $datos = new DadosBaja;
-        $datos->producto = $request->slcProd;
-        $datos->costo = $request->txtCosto;
-        $datos->save();
     }
 
-    public function delete(Request $request)
-    {
-        # code...
-        DadosBaja::where('id',$request->id)->delete();
-    }
     /**
      * Store a newly created resource in storage.
      *

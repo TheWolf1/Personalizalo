@@ -110,7 +110,7 @@
               </div>            
           </div>
           <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" id="btnEliminarD">Eliminar</button>
             <button type="button" class="btn btn-primary" id="btnEditar">Editar</button>
             <button type="submit" class="btn btn-success" id="btnGuardarD" hidden>Guardar</button>
           </form>
@@ -126,10 +126,8 @@
 @section('scripts')
 <script>
 $(document).ready(function(){
-
   //Ingresar materia prima
   $("#formMateriaPrima").submit((e)=>{
-    e.preventDefault();
     datos = $("#formMateriaPrima").serialize();
     $.ajax({
       url:"{{route('Ingresar-Materia')}}",
@@ -137,6 +135,7 @@ $(document).ready(function(){
       data:datos,
       success:function(response){
         $("#TablaMateriaPrima").load(" #TablaMateriaPrima");
+        $("#formMateriaPrima").reset();
         $("#modal-nuevo-articulo").modal('hide');
       },
       error:function(e){
@@ -189,6 +188,17 @@ $(document).ready(function(){
         console.log("Ocurrio un error: "+error);
       }
     });
+  });
+
+  //Eliminar materia prima
+  $("#btnEliminarD").click(function(){
+    dato = "id="+$("#txtId").val();
+    let p = confirm("Seguro desea eliminar?");
+    if (p) {
+        consultaAjax("{{route('eliminarMateria')}}",'GET',dato);
+        $("#TablaMateriaPrima").load(" #TablaMateriaPrima");
+        $("#modal-detalle-materia").modal('hide');
+    }
   });
 });
 </script>
