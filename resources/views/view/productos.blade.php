@@ -136,11 +136,9 @@
                             </div>  
                         </div>
                     </div>
-                    
-              
             </div>
             <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-default" id="btnEliminarID" data-dismiss="modal">Eliminar</button>
               <button type="button" class="btn btn-primary" id="btnEditarID">Editar</button>
               <button type="submit" class="btn btn-success" id="btnGuardarID">Guardar cambios</button>
             </form>
@@ -201,6 +199,26 @@
                         alert("lo sentimos a ocurrido un error: "+error);
                     }
                 });
+            });
+            //Eliminar prodcuto
+            $("#btnEliminarID").click(function(){
+                let id = $("#txtID").val();
+                let datos = "id="+id;
+                let con = confirm("seguro deseas eliminar?");
+                if (con) {
+                    $.ajax({
+                        url:"{{route('EliminarProducto')}}",
+                        data:datos,
+                        type:"GET",
+                        success:function(res){
+                            $("#tablaProductos").load(" #tablaProductos");
+                            $("#modal-detalles-productos").modal("hide");
+                        },
+                        error:function(error){
+                            console.log("Lo sentimos a ocurrido un error:"+error);
+                        }
+                    });
+                }
             });
         });
         //Mostrar los detalles del producto

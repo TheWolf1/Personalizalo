@@ -136,19 +136,19 @@
               @csrf
               <div class="form-group">
                   <label for="txtNombreID">Nombre:</label>
-                  <input type="text" id="txtNombreID" class="form-control" name="txtNombre" placeholder="Ejemplo: Juan">
+                  <input type="text" id="txtNombreID" class="form-control" name="txtNombre" placeholder="Ejemplo: Juan" autocomplete="off">
               </div>
               <div class="form-group">
                 <label for="txtCedulaID">Cedula:</label>
-                <input type="text" class="form-control" id="txtCedulaID" name="txtCedula" placeholder="Ejemplo: 1003138383">
+                <input type="text" class="form-control" id="txtCedulaID" name="txtCedula" placeholder="Ejemplo: 1003138383" autocomplete="off">
               </div>
               <div class="form-group">
                   <label for="txtTelefonoID">Telefono:</label>
-                  <input type="text" class="form-control" id="txtTelefonoID" name="txtTelefono" placeholder="Ejemplo: 0963282309">
+                  <input type="text" class="form-control" id="txtTelefonoID" name="txtTelefono" placeholder="Ejemplo: 0963282309" autocomplete="off">
               </div>
               <div class="form-group">
                 <label for="txtTelefonoID">Fecha de entrega:</label>
-                <input type="text" class="form-control" id="txtFechaID" name="txtFecha" placeholder="Ejemplo: 02/01/2020">
+                <input type="text" class="form-control" id="txtFechaID" name="txtFecha" placeholder="Ejemplo: 02/01/2020" autocomplete="off">
             </div>
               <div class="form-group">
                 <label for="txtTelefonoID">Articulo:</label>
@@ -169,11 +169,11 @@
                 <div class="row">
                 <div class="col-6">
                     <label for="txtAbonoID">Abono:</label>
-                    <input type="text" name="txtAbono" id="txtAbonoID" placeholder="Ejemplo: 8.50" required>
+                    <input type="text" name="txtAbono" id="txtAbonoID" placeholder="Ejemplo: 8.50" autocomplete="off" required >
                 </div>
                 <div class="col-6">
                     <label for="txtAbonoID">Total:</label>
-                    <input type="text" name="txtTotal" id="txtTotalID" placeholder="Ejemplo: 8.50" required>
+                    <input type="text" name="txtTotal" id="txtTotalID" placeholder="Ejemplo: 8.50" autocomplete="off"  required>
                 </div>
             </div>
             </div>

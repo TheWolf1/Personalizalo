@@ -85,11 +85,15 @@ class PedidosController extends Controller
     {
         # code...
         $tot = Pedido::where('estado','<>','Entregado')->count('estado');
-        $unique = Pedido::where('estado',$value)->count('estado');
-        $sum = (100*$unique)/$tot;
+        if($tot>0){
+            $unique = Pedido::where('estado',$value)->count('estado');
+            $sum = (100*$unique)/$tot;
+            return number_format($sum,0);
+            
+        }
         
         //return (float)$sum;
-        return number_format($sum,0);
+        
         
     }
     /**

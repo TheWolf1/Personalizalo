@@ -69,6 +69,12 @@ class ProductosController extends Controller
 
     }
 
+    public function eliminarProducto(Request $request)
+    {
+        # code...
+        Productos::where('id',$request->id)->delete();
+    }
+
     /**
      * Store a newly created resource in storage.
      *
