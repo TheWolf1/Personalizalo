@@ -60,6 +60,8 @@ Route::group(["prefix"=>'admin'],function()
 
     //Usuarios
     Route::get('/Usuarios',"UsuarioController@index")->name('Usuarios');
+    Route::post('/CrearUsuario',"UsuarioController@create")->name('CrearUsuario');
+    Route::get('/DeleteUsuario',"UsuarioController@delete")->name('DeleteUsuario');
 
     //Cerrar session
     Route::get('/CerrarSession',function(){

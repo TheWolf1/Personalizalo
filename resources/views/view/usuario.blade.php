@@ -12,11 +12,11 @@
                 <h3>
                     @yield('titulo')
                 </h3>
-                <button class="btn btn-success" style="float: right;"  data-toggle="modal" data-target="#modal-default">Registrar Usuario</button>
+                <button class="btn btn-success" style="float: right;"  data-toggle="modal" data-target="#modal-registrarUser">Registrar Usuario</button>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover table-bordered">
+                    <table class="table table-hover table-bordered" id="tblUsers">
                         <thead class="table-dark">
                             <tr>
                                 <th>Nombre:</th>
@@ -30,7 +30,7 @@
                                 <td>{{$usuario->name}}</td>
                                 <td>{{$usuario->email}}</td>
                                 <td>
-                                    <button class="btn btn-danger" style="display: flex; margin: 0 auto;"><i class="fa fa-trash"></i></button>
+                                    <button class="btn btn-danger btnEliminar" id="{{$usuario->id}}" style="display: flex; margin: 0 auto;"><i class="fa fa-trash"></i></button>
                                 </td>
                             </tr>
                             @endforeach
@@ -42,7 +42,7 @@
     </div>
 
     <!-- Registrar nuevo usuario -->
-    <div class="modal fade" id="modal-default">
+    <div class="modal fade" id="modal-registrarUser">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -52,7 +52,7 @@
               </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ route('register') }}">
+                <form id="formCrearUser" >
                     @csrf
 
                     <div class="form-group row">
@@ -121,5 +121,22 @@
       <!-- /.modal -->
 @endsection
 @section('scripts')
-    
+    <script>
+        $("#formCrearUser").submit((e)=>{
+            e.preventDefault();
+            dato = $("#formCrearUser").serialize();
+            consultaAjax("{{route('CrearUsuario')}}", "POST", dato);
+            $("#tblUsers").load(" #tblUsers");
+            $("#modal-registrarUser").modal("hide");
+        });
+        $(".btnEliminar").click((e)=>{
+            let p = confirm("Seguro desea eliminar el usuario?");
+            if (p) {
+                datos = "id="+e.currentTarget.id;
+                consultaAjax("{{route('DeleteUsuario')}}", "GET", datos);
+                $("#tblUsers").load(" #tblUsers");
+            } 
+            
+        });
+    </script>
 @endsection
