@@ -13,6 +13,8 @@
                 <button class="btn btn-success" style="float: right;" data-toggle="modal" data-target="#modal-dar-baja">Dar de baja un producto</button>
             </div>
             <div class="card-body">
+                <!--Buscador-->
+                @include('includes/Buscador')
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover" id="tablaBajasID">
                         <thead class="table-dark">
@@ -22,7 +24,7 @@
                                 <th>Eliminar</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="buscar">
                             @foreach ($bajas as $baja)
                                 <tr>
                                     <td>{{$baja->producto}}</td>

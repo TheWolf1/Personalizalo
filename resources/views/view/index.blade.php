@@ -78,6 +78,8 @@
             <button class="btn btn-success" id="nuevoCliente" data-toggle="modal" data-target="#modal-IngresarCL" >Ingresar Nuevo Cliente</button>
         </div>
         <div class="card-body">
+          <!--Buscador-->
+          @include('includes/Buscador')
            <div class="table table-responsive">
                <table class="table table-bordered" id="tablaPedidosID">
                    <thead class="table-dark">
@@ -90,7 +92,7 @@
 
                        </tr>
                    </thead>
-                   <tbody>
+                   <tbody class="buscar">
                     @foreach ($pedidos as $pedido)
                        <tr>
                            <td>{{$pedido->nombre}}</td>

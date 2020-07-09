@@ -19,6 +19,8 @@
                 <button class="btn btn-success" style="float: right;" data-toggle="modal" data-target="#modal-nuevo-producto-Ex">Añadir nuevo elemento</button>
             </div>
             <div class="card-body">
+              <!--Buscador-->
+              @include('includes/Buscador')
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered" id="TablaProductosExpuestos">
                         <thead class="table-dark">
@@ -29,7 +31,7 @@
                                 <th>Eliminar</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="buscar">
                             @foreach ($expuestos as $expuesto)
                                 <tr id="{{$expuesto->id}}">
                                     <td style="width: 80%;">{{$expuesto->descripcion}}</td>

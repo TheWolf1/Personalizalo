@@ -63,6 +63,9 @@ Route::group(["prefix"=>'admin'],function()
     Route::post('/CrearUsuario',"UsuarioController@create")->name('CrearUsuario');
     Route::get('/DeleteUsuario',"UsuarioController@delete")->name('DeleteUsuario');
 
+    //Buscador
+    Route::post('/buscarProducto','BuscadorController@buscarProducto')->name("buscarProducto");
+
     //Cerrar session
     Route::get('/CerrarSession',function(){
         Auth::logout();

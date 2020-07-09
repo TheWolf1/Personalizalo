@@ -20,6 +20,8 @@
                 <button class="btn btn-success" style="float: right;" data-toggle="modal" data-target="#modal-nuevo-articulo">Añadir nuevo elemento</button>
             </div>
             <div class="card-body">
+              <!--Buscador-->
+              @include('includes/Buscador')
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered" id="TablaMateriaPrima">
                         <thead class="table-dark">
@@ -29,7 +31,7 @@
                                 <th>Costo</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="buscar">
                           @foreach ($Materias as $materia)
                             <tr id="{{$materia['id']}}">
                               <td style="width: 80%;">{{$materia['descripcion']}}</td>

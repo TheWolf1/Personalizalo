@@ -12,6 +12,8 @@
                 <h3>@yield('titulo')</h3>
             </div>
             <div class="card-body">
+              <!--Buscador-->
+              @include('includes/Buscador')
                 <div class="table-responsive">
                     <table class="table" id="tblProdEntregados">
                         <thead class="table-dark">
@@ -23,7 +25,7 @@
      
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="buscar">
                          @foreach ($pedidos as $pedido)
                             <tr>
                                 <td>{{$pedido->nombre}}</td>

@@ -32,6 +32,7 @@ class ProductosController extends Controller
         $new_prod->cantidad = $request['txtCantidad'];
         $new_prod->costo = $request['txtCosto'];
         $new_prod->precio = $request['txtPrecio'];
+        $new_prod->docena = $request['txtPrecioDocena'];
         $new_prod->save();
         return "todo salio bien".$request['txtDescripcion'];
     }

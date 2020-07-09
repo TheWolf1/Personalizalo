@@ -15,6 +15,8 @@
                 <button class="btn btn-success" style="float: right;"  data-toggle="modal" data-target="#modal-registrarUser">Registrar Usuario</button>
             </div>
             <div class="card-body">
+                <!--Buscador-->
+                @include('includes/Buscador')
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered" id="tblUsers">
                         <thead class="table-dark">
@@ -24,7 +26,7 @@
                                 <th style="width: 10%;">Eliminar:</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="buscar">
                             @foreach ($usuarios as $usuario)
                             <tr>
                                 <td>{{$usuario->name}}</td>

@@ -18,6 +18,8 @@
                 <button class="btn btn-success" style="float: right;" data-toggle="modal" data-target="#modal-lg">Crear nuevo producto</button>
             </div>
             <div class="card-body">
+                <!--Buscador-->
+                @include('includes/Buscador')
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover" id="tablaProductos">
                         <thead class="table-dark">
@@ -26,15 +28,17 @@
                                 <th>Cantidad</th>
                                 <th>Costo</th>
                                 <th>Precio</th>
+                                <th>X12</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="buscar">
                             @foreach ($registros as $registro)
                                 <tr onclick="detalleProducto({{$registro['id']}})">
                                     <td>{{$registro['descripcion']}}</td>
                                     <td>{{$registro['cantidad']}}</td>
                                     <td>${{$registro['costo']}}</td>
                                     <td>${{$registro['precio']}}</td>
+                                    <td>${{$registro['docena']}}</td>
                                     </a>
                                 </tr>  
                             @endforeach
@@ -74,6 +78,10 @@
                     <div class="form-group col-6">
                         <label for="txtDescripcionID">Precio:</label>
                         <input type="text" class="form-control" id="txtPrecioID" name="txtPrecio">
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="txtDescripcionID">Precio x 12:</label>
+                        <input type="text" class="form-control" id="txtPrecioDocenaID" name="txtPrecioDocena">
                     </div>
                   </div>
               
@@ -156,6 +164,7 @@
     <script>
         $(document).ready(function(){
             $("#btnGuardarID").hide();
+            //Nuevo producto
             $("#formProductoID").submit((e)=>{
             var datos = $("#formProductoID").serialize();
                 $.ajax({
@@ -220,6 +229,8 @@
                     });
                 }
             });
+
+
         });
         //Mostrar los detalles del producto
         function detalleProducto(id){
