@@ -15,7 +15,7 @@ class ProductosController extends Controller
     public function index()
     {
         //
-        $registros = Productos::all();
+        $registros = Productos::orderBy('descripcion','ASC')->get();
         return view("view/productos",compact('registros'));
     }
 

@@ -157,7 +157,6 @@
         $(document).ready(function(){
             $("#btnGuardarID").hide();
             $("#formProductoID").submit((e)=>{
-            e.preventDefault();
             var datos = $("#formProductoID").serialize();
                 $.ajax({
                     url:"{{route('ingresarProducto')}}",
