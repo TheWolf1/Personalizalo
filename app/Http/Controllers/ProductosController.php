@@ -58,7 +58,8 @@ class ProductosController extends Controller
                 'descripcion'=>$request['txtDetalle'],
                 'cantidad' =>$request['txtCantidad'],
                 'costo' =>$request['txtCosto'],
-                'precio' =>$request['txtPrecio']
+                'precio' =>$request['txtPrecio'],
+                'docena' =>$request['txtDocenaD']
                 ]);
             return "todo salio bien ".$request['txtID'];
         } catch (\Throwable $th) {

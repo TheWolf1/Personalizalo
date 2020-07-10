@@ -33,7 +33,7 @@
                         </thead>
                         <tbody class="buscar">
                             @foreach ($registros as $registro)
-                                <tr onclick="detalleProducto({{$registro['id']}})">
+                                <tr class="@if (($registro['cantidad']<=0) and ($registro['cantidad']<1) ) bg-danger @elseif (($registro['cantidad']>=1) and ($registro['cantidad']<5)) bg-orange @endif " onclick="detalleProducto({{$registro['id']}})">
                                     <td>{{$registro['descripcion']}}</td>
                                     <td>{{$registro['cantidad']}}</td>
                                     <td>${{$registro['costo']}}</td>
@@ -144,6 +144,15 @@
                             </div>  
                         </div>
                     </div>
+                    <div class="form-group col-8">
+                        <label for="">Docena:</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">$</span>
+                            </div>
+                            <input class="form-control" type="text" name="txtDocenaD" id="txtDocenaDID" disabled>
+                        </div>  
+                    </div>
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" id="btnEliminarID" data-dismiss="modal">Eliminar</button>
@@ -247,6 +256,7 @@
                         $("#txtCantidadDetalleID").val(value.cantidad);
                         $("#txtCostoDetalleID").val(value.costo);
                         $("#txtPrecioDID").val(value.precio);
+                        $("#txtDocenaDID").val(value.docena);
                     });
                 },
                 error:function(error){
