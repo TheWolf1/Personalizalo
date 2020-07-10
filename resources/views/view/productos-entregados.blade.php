@@ -3,7 +3,11 @@
     Productos Entregados
 @endsection
 @section('styles')
-    
+    <style>
+      #tblProdEntregados tbody td:nth-child(3){
+        text-align: center;
+      }
+    </style>
 @endsection
 @section('contenido')
     <div class="row">
@@ -15,11 +19,12 @@
               <!--Buscador-->
               @include('includes/Buscador')
                 <div class="table-responsive">
-                    <table class="table" id="tblProdEntregados">
+                    <table class="table table-bordered" id="tblProdEntregados">
                         <thead class="table-dark">
                             <tr>
                                 <th>Nombre</th>
                                 <th>Fecha de entrega</th>
+                                <th>Total</th>
                                 <th>Detalles</th>
                                 <th>Eliminar</th>
      
@@ -30,11 +35,24 @@
                             <tr>
                                 <td>{{$pedido->nombre}}</td>
                                 <td style="width: 20%;">{{$pedido->fecha}}</td>
+                                <td style="width: 10%;"><b>${{$pedido->total}}</b></td>
                                 <td style="width: 10%;"><button class="btn btn-info align-self-center" style="display:flex; margin:0 auto; " onclick="mostrarDetalle({{$pedido->id}})"><i class="fa fa-pen" style="font-size:20px;"></i></button></td>
                                <td style="width: 10%;"><button class="btn btn-danger align-self-center btnEliminar" id="{{$pedido->id}}" style="display:flex; margin:0 auto; "><i class="fa fa-trash" style="font-size:20px;"></i></button></td>
                             </tr>
                            @endforeach
                         </tbody>
+                        <tfoot class="table-dark" style="height: auto;">
+                          <tr>
+                              <td></td>
+                              <td></td>
+                              <td style="text-align: center;">
+                                  <b class="d-block">Total</b>
+                                  <span>${{$sumEntregados}}</span>
+                              </td>
+                              <td></td>
+                              <td></td>
+                          </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>

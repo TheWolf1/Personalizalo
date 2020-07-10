@@ -44,6 +44,21 @@
                             @endforeach
                             
                         </tbody>
+                        <tfoot class="table-dark" style="height: auto;">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td style="text-align: center;">
+                                    <b class="d-block">Total</b>
+                                    <span>${{$sumCosto}}</span>
+                                </td>
+                                <td style="text-align: center;">
+                                    <b class="d-block">Total</b>
+                                    <span>${{$sumPrecio}}</span>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>

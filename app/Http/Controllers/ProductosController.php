@@ -15,8 +15,10 @@ class ProductosController extends Controller
     public function index()
     {
         //
+        $sumCosto = Productos::sum('costo');
+        $sumPrecio = Productos::sum('precio');
         $registros = Productos::orderBy('descripcion','ASC')->get();
-        return view("view/productos",compact('registros'));
+        return view("view/productos",compact('registros','sumCosto','sumPrecio'));
     }
 
     /**

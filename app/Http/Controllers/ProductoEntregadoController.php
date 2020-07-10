@@ -16,7 +16,8 @@ class ProductoEntregadoController extends Controller
     {
         //
         $pedidos = Pedido::where('estado','Entregado')->get();
-        return view('view/productos-entregados',compact('pedidos'));
+        $sumEntregados = Pedido::where('estado','Entregado')->sum('total');
+        return view('view/productos-entregados',compact('pedidos','sumEntregados'));
     }
 
     /**
