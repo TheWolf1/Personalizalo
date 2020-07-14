@@ -4,6 +4,9 @@
     Productos   
 @endsection
 @section('styles')
+<!-- DataTables -->
+<link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+<link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
    <style>
        #tablaProductos tbody{
         cursor: pointer;
@@ -18,50 +21,46 @@
                 <button class="btn btn-success" style="float: right;" data-toggle="modal" data-target="#modal-lg">Crear nuevo producto</button>
             </div>
             <div class="card-body">
-                <!--Buscador-->
-                @include('includes/Buscador')
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover" id="tablaProductos">
-                        <thead class="table-dark">
-                            <tr>
-                                <th style="width: 70%;">Descripcion</th>
-                                <th>Cantidad</th>
-                                <th>Costo</th>
-                                <th>Precio</th>
-                                <th>X12</th>
-                            </tr>
-                        </thead>
-                        <tbody class="buscar">
-                            @foreach ($registros as $registro)
-                                <tr class="@if (($registro['cantidad']<=0) and ($registro['cantidad']<1) ) bg-danger @elseif (($registro['cantidad']>=1) and ($registro['cantidad']<5)) bg-orange @endif " onclick="detalleProducto({{$registro['id']}})">
-                                    <td>{{$registro['descripcion']}}</td>
-                                    <td>{{$registro['cantidad']}}</td>
-                                    <td>${{$registro['costo']}}</td>
-                                    <td>${{$registro['precio']}}</td>
-                                    <td>${{$registro['docena']}}</td>
-                                    </a>
-                                </tr>  
-                            @endforeach
-                            
-                        </tbody>
-                        <tfoot class="table-dark" style="height: auto;">
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td style="text-align: center;">
-                                    <b class="d-block">Total</b>
-                                    <span>${{$sumCosto}}</span>
-                                </td>
-                                <td style="text-align: center;">
-                                    <b class="d-block">Total</b>
-                                    <span>${{$sumPrecio}}</span>
-                                </td>
-                                <td></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
+                <table class="table table-bordered table-hover tablaId" id="tablaProductos">
+                    <thead class="table-dark">
+                        <tr>
+                            <th style="width: 70%;">Descripcion</th>
+                            <th>Cantidad</th>
+                            <th>Costo</th>
+                            <th>Precio</th>
+                            <th>X12</th>
+                        </tr>
+                    </thead>
+                    <tbody class="buscar">
+                        @foreach ($registros as $registro)
+                            <tr class="@if (($registro['cantidad']<=0) and ($registro['cantidad']<1) ) bg-danger @elseif (($registro['cantidad']>=1) and ($registro['cantidad']<5)) bg-orange @endif " onclick="detalleProducto({{$registro['id']}})">
+                                <td>{{$registro['descripcion']}}</td>
+                                <td>{{$registro['cantidad']}}</td>
+                                <td>${{$registro['costo']}}</td>
+                                <td>${{$registro['precio']}}</td>
+                                <td>${{$registro['docena']}}</td>
+                                </a>
+                            </tr>  
+                        @endforeach
+                        
+                    </tbody>
+                    <tfoot class="table-dark">
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th style="text-align: center;">
+                                <b class="d-block">Total</b>
+                                <span>${{$sumCosto}}</span>
+                            </th>
+                            <th style="text-align: center;">
+                                <b class="d-block">Total</b>
+                                <span>${{$sumPrecio}}</span>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+              </div>
         </div>
     </div>
     <!-- Modal producto nuevo -->
@@ -185,6 +184,11 @@
 
 
 @section('scripts')
+<!-- DataTables -->
+<script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
     <script>
         $(document).ready(function(){
             $("#btnGuardarID").hide();

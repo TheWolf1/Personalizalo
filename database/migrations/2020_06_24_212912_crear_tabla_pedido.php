@@ -23,6 +23,7 @@ class CrearTablaPedido extends Migration
             $table->double('abono',5,2)->nullable();
             $table->double('total',5,2);
             $table->string('estado',15);
+            $table->string('productos',200);
             $table->timestamps();
         });
     }

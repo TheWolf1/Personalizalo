@@ -17,12 +17,14 @@ class PedidosController extends Controller
     public function index()
     {
         //
+        $totalAbono = Pedido::where('estado','<>','Entregado')->sum('abono');
+        $totalP = Pedido::where('estado','<>','Entregado')->sum('total');
         $Listo = $this->porcentajesEstado('Listo');
         $proceso = $this->porcentajesEstado('En_Proceso');
         $pendiente = $this->porcentajesEstado('Pendiente');
         $productos = Productos::all();
         $pedidos = Pedido::where('estado','<>','Entregado')->get();
-        return view('view/index',compact('pedidos','productos','Listo','proceso','pendiente'));
+        return view('view/index',compact('pedidos','productos','Listo','proceso','pendiente','totalAbono','totalP'));
     }
 
     /**
@@ -44,19 +46,8 @@ class PedidosController extends Controller
             $nuevo_pedido->abono = $request['txtAbono'];
             $nuevo_pedido->total = $request['txtTotal'];
             $nuevo_pedido->estado = $request['EstadoPedido'];
+            $nuevo_pedido->productos = $request['arProd'];
             $nuevo_pedido->save();
-            $miJson = json_decode($request['arProd'],true);
-            //return  "el Json es:".implode("|",$miJson);
-            foreach ($miJson as $key) {
-                # code...
-                $cantidad = Productos::select('cantidad')->where('descripcion','=',$key['producto'])->get();
-                foreach ($cantidad as $cant) {
-                    # code...
-                    $suma = $cant->cantidad - $key['cantidad'];
-                    Productos::where('descripcion','=',$key['producto'])->update(['cantidad'=>$suma]);
-                }
-                
-            }
         } catch (PDOException $e) {
             //throw $th;
             return response()->json(['a ocurrido un error: '.$e],200);
@@ -72,7 +63,24 @@ class PedidosController extends Controller
     public function ActualizarEstado(Request $request)
     {
         # code...
+        if ($request['Estado']=="Entregado") {
+            # code...
+            $pedidos = Pedido::where('id',$request['id'])->first()->get();
+            $miJson = json_decode($pedidos[0]['productos'],true);
+            foreach ($miJson as $key) {
+                # code...
+                $cantidad = Productos::select('cantidad')->where('descripcion','=',$key['producto'])->get();
+                foreach ($cantidad as $cant) {
+                    # code...
+                    $suma = $cant->cantidad - $key['cantidad'];
+                    Productos::where('descripcion','=',$key['producto'])->update(['cantidad'=>$suma]);
+                }
+                
+            }
+        }
         Pedido::where('id',$request['id'])->update(['estado'=>$request['Estado']]);
+        
+        
     }
 
     public function eliminarPedido(Request $request)

@@ -53,6 +53,9 @@ Route::group(["prefix"=>'admin'],function()
     Route::get('/Productos-Entregados','ProductoEntregadoController@index')->name('Productos-Entregados')->middleware('auth');
     Route::get('/EliminarProductoEntregado','ProductoEntregadoController@delete')->name("EliminarProductoEntregado")->middleware('auth');
 
+    //Productos vendidos
+    Route::get('/Productos-vendidos','VendidoController@index')->name('Productos-vendidos');
+
     //Productos dados de baja
     Route::get('/Dados-de-baja','DadosBajaController@index')->name('Dados-de-baja')->middleware('auth');
     Route::post('/registrar-baja','DadosBajaController@create')->name('registrar-baja')->middleware('auth');

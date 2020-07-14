@@ -10,6 +10,9 @@
   <link rel="stylesheet" href="{{asset('plugins/jquery-ui/jquery-ui.min.css')}}">
   <!-- summernote -->
   <link rel="stylesheet" href="{{asset('plugins/summernote/summernote-bs4.css')}}">
+  <!-- DataTables -->
+<link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+<link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
   <style>
       #nuevoCliente{
           float: right;
@@ -78,15 +81,16 @@
             <button class="btn btn-success" id="nuevoCliente" data-toggle="modal" data-target="#modal-IngresarCL" >Ingresar Nuevo Cliente</button>
         </div>
         <div class="card-body">
-          <!--Buscador-->
-          @include('includes/Buscador')
            <div class="table table-responsive">
-               <table class="table table-bordered" id="tablaPedidosID">
+               <table class="table table-bordered tablaId" id="tablaPedidosID">
                    <thead class="table-dark">
                        <tr>
                            <th>Nombre</th>
                            <th>Fecha de entrega</th>
                            <th>Estado</th>
+                           <th>Detalles</th>
+                           <th>Abono</th>
+                           <th>Total</th>
                            <th>Detalles</th>
                            <th>Eliminar</th>
 
@@ -96,8 +100,8 @@
                     @foreach ($pedidos as $pedido)
                        <tr>
                            <td>{{$pedido->nombre}}</td>
-                           <td style="width: 20%;">{{$pedido->fecha}}</td>
-                           <td style="width: 20%;" id="{{$pedido->id}}">
+                           <td>{{$pedido->fecha}}</td>
+                           <td id="{{$pedido->id}}">
                             <select class="form-control slcEstados" name="" id="EstadosID">
                               <option value="" disabled>--Seleccionar</option>
                               <option value="Pendiente" <?php if($pedido->estado=="Pendiente"){echo "selected";} ?>>Pendiente</option>
@@ -105,19 +109,44 @@
                               <option value="Listo" <?php if($pedido->estado=="Listo"){echo "selected";} ?>>Listo</option>
                               <option value="Entregado" <?php if($pedido->estado=="Entregado"){echo "selected";} ?>>Entregado</option>
                             </select>
+                            <td>
+                              <ul>
+                              <?php
+                                
+                                $des = json_decode($pedido->productos,true );
+                                foreach ($des as $d) {
+                                  # code...
+                                
+                                ?>
+                                  <li>
+                                    @php
+                                        echo($d['cantidad']." ".$d['producto']);
+                                    @endphp
+                                  </li>
+                              <?php 
+                              }
+                              ?>
+                              </ul>
+                            </td>
+                            <td>{{$pedido->abono}}</td>
+                            <td>{{$pedido->total}}</td>
                            </td>
                            <td style="width: 10%;"><button class="btn btn-info align-self-center" style="display:flex; margin:0 auto; " onclick="mostrarDetalle({{$pedido->id}})"><i class="fa fa-pen" style="font-size:20px;"></i></button></td>
                           <td style="width: 10%;"><button class="btn btn-danger align-self-center btnEliminar" id="{{$pedido->id}}" style="display:flex; margin:0 auto; "><i class="fa fa-trash" style="font-size:20px;"></i></button></td>
                        </tr>
                       @endforeach
                    </tbody>
-                   <tfoot>
-                       <!--<tr>
-                           <td>Valores</td>
-                           <td>Valores</td>
-                           <td>Valores</td>
-                           <td>Valores</td>
-                       </tr>-->
+                   <tfoot class="table-dark">
+                      <tr>
+                           <th></th>
+                           <th></th>
+                           <th></th>
+                           <th></th>
+                           <th><b>Total: ${{$totalAbono}}</b></th>
+                           <th><b>Total: ${{$totalP}}</b></th>
+                           <th></th>
+                           <th></th>
+                       </tr>
                    </tfoot>
                </table>
            </div>
@@ -207,24 +236,70 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Large Modal</h4>
+        <h4 class="modal-title">Editar pedido</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body" id="DetallePedido">
-        <p><b>Nombre:</b><span id="DetalleNombreID"></span></p>
+        <form class="form" id="formDPedido">
+          @csrf
+          <div class="form-group">
+              <label for="txtNombreID">Nombre:</label>
+              <input type="text" id="DetalleNombreID" class="form-control" name="txtNombre" placeholder="Ejemplo: Juan" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="txtCedulaID">Cedula:</label>
+            <input type="text" class="form-control" id="DetalleCedulaID" name="txtCedula" placeholder="Ejemplo: 1003138383" autocomplete="off">
+          </div>
+          <div class="form-group">
+              <label for="txtTelefonoID">Telefono:</label>
+              <input type="text" class="form-control" id="DetalleTelefonoID" name="txtTelefono" placeholder="Ejemplo: 0963282309" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="txtTelefonoID">Fecha de entrega:</label>
+            <input type="text" class="form-control" id="DetalleFechaID" name="txtFecha" placeholder="Ejemplo: 02/01/2020" autocomplete="off">
+        </div>
+          <div class="form-group">
+            <label for="txtTelefonoID">Articulo:</label>
+            <select class="form-control" name="txtPedido" id="productoDPut">
+                <option  value="--Seleccionar" selected>--Seleccionar</option>
+              @foreach ($productos as $producto)
+                <option  value="{{$producto['descripcion']}}">{{$producto['descripcion']}}</option>
+              @endforeach
+            </select>
+        </div>
+        <div class="form-group pad">
+            <div class="mb-3">
+                <textarea class="textarea" id="DetalleDescripcionID" placeholder="Ingrese la descripcion"
+                          style="width: 100%; height: 500px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+            <div class="col-6">
+                <label for="txtAbonoID">Abono:</label>
+                <input type="text" name="txtAbono" id="DetalleAbonoID" placeholder="Ejemplo: 8.50" autocomplete="off" required >
+            </div>
+            <div class="col-6">
+                <label for="txtAbonoID">Total:</label>
+                <input type="text" name="txtTotal" id="DetalleTotalID" placeholder="Ejemplo: 8.50" autocomplete="off"  required>
+            </div>
+        </div>
+        </div>
+        </form>
+       <!-- <p><b>Nombre:</b><span id="DetalleNombreID"></span></p>
         <p><b>Cedula:</b><span id="DetalleCedulaID"></span></p>
         <p><b>Telefono:</b><span id="DetalleTelefonoID"></span></p>
         <p><b>Fecha de entrega:</b><span id="DetalleFechaID"></span></p>
         <p><b>Descripcion:</b><span id="DetalleDescripcionID"></span></p>
         <p><b>Abono:</b>$<span id="DetalleAbonoID"></span></p>
         <p><b>Total:</b>$<span id="DetalleTotalID"></span></p>
-        <p><b>Estado:</b><span id="DetalleEstadoID"></span></p>
+        <p><b>Estado:</b><span id="DetalleEstadoID"></span></p>-->
       </div>
       <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary">Guardar</button>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -262,9 +337,14 @@
 <script src=" {{asset('plugins/jquery-ui/jquery-ui.min.js')}} "></script>
 <!-- Summernote -->
 <script src="{{asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
+<!-- DataTables -->
+<script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
 <script>
-    var articulos= new Array();
-    var A_articulos = new Array();
+  var articulos= new Array();
+  var A_articulos = new Array();
   $(document).ready(function(){
 
  
@@ -338,6 +418,7 @@
           $("#formPedido input").val("");
           $(".note-editable").html("");
           A_articulos=[];
+          articulos=[];
         },
         error:function(error){
           alert("A ocurrido un error: "+error);
@@ -373,6 +454,54 @@
         $("#productoPut").val("--Seleccionar");
       }
     });
+
+
+
+
+
+
+//-------------------
+
+
+       //cambiar descripcion (Actualizar)
+       $("#productoDPut").change(function(){
+      if(articulos.indexOf($("#productoDPut").val())<0){
+        articulos.push($("#productoDPut").val());
+        A_articulos.push({
+          'producto':$("#productoDPut").val(),
+          'cantidad':1
+        });
+        let datos = "<li>"+$("#productoDPut").val()+"</li>";
+        $(".note-editable").html("");
+        A_articulos.forEach((value,index)=>{
+          $(".note-editable").append('<li>'+value.producto+' Cantidad: '+value.cantidad+'</li>');
+        });
+        $("#productoDPut").val("--Seleccionar");
+      }else{
+        A_articulos.forEach((value, index)=>{
+          if(value.producto==$("#productoDPut").val()){
+            A_articulos[index].cantidad+=1;
+          }
+        });
+        $(".note-editable").html("");
+        A_articulos.forEach((value,index)=>{
+          $(".note-editable").append('<li>'+value.producto+' Cantidad: '+value.cantidad+'</li>');
+        });
+        $("#productoDPut").val("--Seleccionar");
+      }
+    });
+
+
+//--------------------
+
+
+
+
+
+
+
+
+
     //validar estado del pedido
    $(".slcEstados").change(function(e){
       e.preventDefault();
@@ -382,6 +511,7 @@
         url:"{{route('actualizarEstado')}}",
         data:datos,
         success:function(response){
+          console.log(response);
           setTimeout(() => {
             validarEstadoPedido();
           }, 300);
@@ -420,6 +550,8 @@
         }
       });
    });
+
+
 });
 //fin ready
 
@@ -434,14 +566,15 @@ function mostrarDetalle(id){
     data:dato,
     dataType:'json',
     success:function(e){
+      A_articulos = JSON.parse(e.productos);
       $("#DetallePedido span").html("");
-      $("#DetalleNombreID").append(e.nombre);
-      $("#DetalleCedulaID").append(e.cedula);
-      $("#DetalleTelefonoID").append(e.telefono);
-      $("#DetalleFechaID").append(e.fecha);
-      $("#DetalleDescripcionID").append(e.descripcion);
-      $("#DetalleAbonoID").append(e.abono);
-      $("#DetalleTotalID").append(e.total);
+      $("#DetalleNombreID").val(e.nombre);
+      $("#DetalleCedulaID").val(e.cedula);
+      $("#DetalleTelefonoID").val(e.telefono);
+      $("#DetalleFechaID").val(e.fecha);
+      $("#formDPedido .note-editable").html(e.descripcion);
+      $("#DetalleAbonoID").val(e.abono);
+      $("#DetalleTotalID").val(e.total);
       $("#modal-lg").modal('show');
     },
     error:function(e){

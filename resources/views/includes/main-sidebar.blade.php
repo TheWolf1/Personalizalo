@@ -43,6 +43,14 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{route('Productos-vendidos')}}" class="nav-link {{ ! Route::is('Productos-vendidos') ?: 'active'}}">
+              <i class="nav-icon fas fa-money-bill-alt"></i>
+              <p>
+                Productos vendidos
+              </p>
+            </a>
+          </li>
           <li class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-archive"></i>

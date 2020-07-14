@@ -3,6 +3,9 @@
     Productos Entregados
 @endsection
 @section('styles')
+<!-- DataTables -->
+<link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+<link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
     <style>
       #tblProdEntregados tbody td:nth-child(3){
         text-align: center;
@@ -11,59 +14,57 @@
 @endsection
 @section('contenido')
     <div class="row">
-        <div class="card col-12 card-danger card-outline">
-            <div class="card-header">
-                <h3>@yield('titulo')</h3>
-            </div>
-            <div class="card-body">
-              <!--Buscador-->
-              @include('includes/Buscador')
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="tblProdEntregados">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Fecha de entrega</th>
-                                <th>Total</th>
-                                <th>Detalles</th>
-                                <th>Eliminar</th>
-     
-                            </tr>
-                        </thead>
-                        <tbody class="buscar">
-                         @foreach ($pedidos as $pedido)
-                            <tr>
-                                <td>{{$pedido->nombre}}</td>
-                                <td style="width: 20%;">{{$pedido->fecha}}</td>
-                                <td style="width: 10%;"><b>${{$pedido->total}}</b></td>
-                                <td style="width: 10%;"><button class="btn btn-info align-self-center" style="display:flex; margin:0 auto; " onclick="mostrarDetalle({{$pedido->id}})"><i class="fa fa-pen" style="font-size:20px;"></i></button></td>
-                               <td style="width: 10%;"><button class="btn btn-danger align-self-center btnEliminar" id="{{$pedido->id}}" style="display:flex; margin:0 auto; "><i class="fa fa-trash" style="font-size:20px;"></i></button></td>
-                            </tr>
-                           @endforeach
-                        </tbody>
-                        <tfoot class="table-dark" style="height: auto;">
-                          <tr>
-                              <td></td>
-                              <td></td>
-                              <td style="text-align: center;">
-                                  <b class="d-block">Total</b>
-                                  <span>${{$sumEntregados}}</span>
-                              </td>
-                              <td></td>
-                              <td></td>
-                          </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
+      <div class="card col-12 card-danger card-outline">
+        <div class="card-header">
+          <h3>@yield('titulo')</h3>
         </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <table class="table table-bordered table-striped tablaId">
+            <thead class="table-dark">
+            <tr>
+              <th>Nombre</th>
+              <th>Fecha</th>
+              <th>Precio</th>
+              <th>Detalle</th>
+              <th>Eliminar</th>
+            </tr>
+            </thead>
+            <tbody>
+              @foreach ($pedidos as $pedido)
+              <tr>
+                  <td>{{$pedido->nombre}}</td>
+                  <td style="width: 20%;">{{$pedido->fecha}}</td>
+                  <td style="width: 10%;"><b>${{$pedido->total}}</b></td>
+                  <td style="width: 10%;"><button class="btn btn-info align-self-center" style="display:flex; margin:0 auto; " onclick="mostrarDetalle({{$pedido->id}})"><i class="fa fa-pen" style="font-size:20px;"></i></button></td>
+                 <td style="width: 10%;"><button class="btn btn-danger align-self-center btnEliminar" id="{{$pedido->id}}" style="display:flex; margin:0 auto; "><i class="fa fa-trash" style="font-size:20px;"></i></button></td>
+              </tr>
+             @endforeach
+            </tbody>
+            <tfoot class="table-dark">
+            <tr>
+              <th></th>
+              <th></th>
+              <th>  
+                <b class="d-block">Total</b>
+                <span>${{$sumEntregados}}</span>
+              </th>
+              <th></th>
+              <th></th>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
     </div>
 <!-- Modal para mostrar los detalles del pedido -->
 <div class="modal fade" id="modal-lg">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Large Modal</h4>
+          <h4 class="modal-title">Descripcion</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -88,6 +89,11 @@
   </div>
 @endsection
 @section('scripts')
+<!-- DataTables -->
+<script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
 <script>
   $(document).ready(function(){
     $(".btnEliminar").click((e)=>{
