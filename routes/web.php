@@ -28,6 +28,7 @@ Route::group(["prefix"=>'admin'],function()
     Route::post('/ingresarPedido','Pedidoscontroller@create')->name('ingresarPedido')->middleware('auth');
     Route::get('/mostrarPedido','Pedidoscontroller@mostrarDetalle')->name('mostrarPedido')->middleware('auth');
     Route::get('/actualizarEstado','Pedidoscontroller@ActualizarEstado')->name('actualizarEstado')->middleware('auth');
+    Route::post('/actualizarPedido','Pedidoscontroller@ActualizarPedido')->name('actualizarPedido')->middleware('auth');
     Route::get('eliminarPedido','Pedidoscontroller@eliminarPedido')->name('eliminarPedido')->middleware('auth');
 
     //Pagina de productos

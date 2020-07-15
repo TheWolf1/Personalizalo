@@ -128,11 +128,11 @@
                               ?>
                               </ul>
                             </td>
-                            <td>{{$pedido->abono}}</td>
-                            <td>{{$pedido->total}}</td>
+                            <td style="width: 8%;">{{$pedido->abono}}</td>
+                            <td style="width: 8%;">{{$pedido->total}}</td>
                            </td>
-                           <td style="width: 10%;"><button class="btn btn-info align-self-center" style="display:flex; margin:0 auto; " onclick="mostrarDetalle({{$pedido->id}})"><i class="fa fa-pen" style="font-size:20px;"></i></button></td>
-                          <td style="width: 10%;"><button class="btn btn-danger align-self-center btnEliminar" id="{{$pedido->id}}" style="display:flex; margin:0 auto; "><i class="fa fa-trash" style="font-size:20px;"></i></button></td>
+                           <td style="width: 8%;"><button class="btn btn-info align-self-center" style="display:flex; margin:0 auto; " onclick="mostrarDetalle({{$pedido->id}})"><i class="fa fa-pen" style="font-size:20px;"></i></button></td>
+                          <td style="width: 8%;"><button class="btn btn-danger align-self-center btnEliminar" id="{{$pedido->id}}" style="display:flex; margin:0 auto; "><i class="fa fa-trash" style="font-size:20px;"></i></button></td>
                        </tr>
                       @endforeach
                    </tbody>
@@ -244,6 +244,7 @@
       <div class="modal-body" id="DetallePedido">
         <form class="form" id="formDPedido">
           @csrf
+          <input type="text" id="txtDID" name="txtDID" hidden>
           <div class="form-group">
               <label for="txtNombreID">Nombre:</label>
               <input type="text" id="DetalleNombreID" class="form-control" name="txtNombre" placeholder="Ejemplo: Juan" autocomplete="off">
@@ -287,19 +288,12 @@
             </div>
         </div>
         </div>
-        </form>
-       <!-- <p><b>Nombre:</b><span id="DetalleNombreID"></span></p>
-        <p><b>Cedula:</b><span id="DetalleCedulaID"></span></p>
-        <p><b>Telefono:</b><span id="DetalleTelefonoID"></span></p>
-        <p><b>Fecha de entrega:</b><span id="DetalleFechaID"></span></p>
-        <p><b>Descripcion:</b><span id="DetalleDescripcionID"></span></p>
-        <p><b>Abono:</b>$<span id="DetalleAbonoID"></span></p>
-        <p><b>Total:</b>$<span id="DetalleTotalID"></span></p>
-        <p><b>Estado:</b><span id="DetalleEstadoID"></span></p>-->
+        
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary">Guardar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </form>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -455,16 +449,8 @@
       }
     });
 
-
-
-
-
-
-//-------------------
-
-
-       //cambiar descripcion (Actualizar)
-       $("#productoDPut").change(function(){
+   //cambiar descripcion (Actualizar)
+    $("#productoDPut").change(function(){
       if(articulos.indexOf($("#productoDPut").val())<0){
         articulos.push($("#productoDPut").val());
         A_articulos.push({
@@ -489,17 +475,8 @@
         });
         $("#productoDPut").val("--Seleccionar");
       }
+      console.log(A_articulos);
     });
-
-
-//--------------------
-
-
-
-
-
-
-
 
 
     //validar estado del pedido
@@ -551,7 +528,16 @@
       });
    });
 
-
+   //Actualizar pedido
+   $("#formDPedido").submit(function(e){
+     let des = $("#formDPedido .note-editable").html();
+     let arProd = JSON.stringify(A_articulos);
+     let data = $(this).serialize()+"&data="+des+"&arP="+arProd;
+     consultaAjax("{{route('actualizarPedido')}}", "POST", data);
+     $("#tablaPedidosID").load(" #tablaPedidosID");
+     $(this).reset();
+     $("#modal-lg").modal("hide")
+   });
 });
 //fin ready
 
@@ -568,6 +554,7 @@ function mostrarDetalle(id){
     success:function(e){
       A_articulos = JSON.parse(e.productos);
       $("#DetallePedido span").html("");
+      $("#txtDID").val(e.id);
       $("#DetalleNombreID").val(e.nombre);
       $("#DetalleCedulaID").val(e.cedula);
       $("#DetalleTelefonoID").val(e.telefono);
@@ -576,6 +563,9 @@ function mostrarDetalle(id){
       $("#DetalleAbonoID").val(e.abono);
       $("#DetalleTotalID").val(e.total);
       $("#modal-lg").modal('show');
+      A_articulos.forEach((value,index)=>{
+        articulos.push(value.producto);
+      });
     },
     error:function(e){
       console.log("a ocurrido un error"+e);

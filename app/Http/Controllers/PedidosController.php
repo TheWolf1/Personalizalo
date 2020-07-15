@@ -79,8 +79,6 @@ class PedidosController extends Controller
             }
         }
         Pedido::where('id',$request['id'])->update(['estado'=>$request['Estado']]);
-        
-        
     }
 
     public function eliminarPedido(Request $request)
@@ -103,6 +101,21 @@ class PedidosController extends Controller
         //return (float)$sum;
         
         
+    }
+
+    public function ActualizarPedido(Request $request)
+    {
+        # code...
+        Pedido::where('id',$request->txtDID)->update([
+            'nombre'=>$request->txtNombre,
+            'cedula'=>$request->txtCedula,
+            'telefono'=>$request->txtTelefono,
+            'fecha'=>$request->txtFecha,
+            'descripcion'=>$request->data,
+            'abono'=>$request->txtAbono,
+            'total'=>$request->txtTotal,
+            'productos'=>$request->arP,
+        ]);
     }
     /**
      * Store a newly created resource in storage.
