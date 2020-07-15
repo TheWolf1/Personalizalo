@@ -24,12 +24,12 @@ Route::get('/', function ()
 Route::group(["prefix"=>'admin'],function()
 {
     //Pagina principal
-    Route::get('/', 'Pedidoscontroller@index')->name('index')->middleware('auth');
-    Route::post('/ingresarPedido','Pedidoscontroller@create')->name('ingresarPedido')->middleware('auth');
-    Route::get('/mostrarPedido','Pedidoscontroller@mostrarDetalle')->name('mostrarPedido')->middleware('auth');
-    Route::get('/actualizarEstado','Pedidoscontroller@ActualizarEstado')->name('actualizarEstado')->middleware('auth');
-    Route::post('/actualizarPedido','Pedidoscontroller@ActualizarPedido')->name('actualizarPedido')->middleware('auth');
-    Route::get('eliminarPedido','Pedidoscontroller@eliminarPedido')->name('eliminarPedido')->middleware('auth');
+    Route::get('/', 'PedidosController@index')->name('index')->middleware('auth');
+    Route::post('/ingresarPedido','PedidosController@create')->name('ingresarPedido')->middleware('auth');
+    Route::get('/mostrarPedido','PedidosController@mostrarDetalle')->name('mostrarPedido')->middleware('auth');
+    Route::get('/actualizarEstado','PedidosController@ActualizarEstado')->name('actualizarEstado')->middleware('auth');
+    Route::post('/actualizarPedido','PedidosController@ActualizarPedido')->name('actualizarPedido')->middleware('auth');
+    Route::get('eliminarPedido','PedidosController@eliminarPedido')->name('eliminarPedido')->middleware('auth');
 
     //Pagina de productos
     Route::get('/Productos','ProductosController@index')->name('productos')->middleware('auth');

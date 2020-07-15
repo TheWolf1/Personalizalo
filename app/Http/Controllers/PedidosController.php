@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Pedido;
 use App\Productos;
+use App\Vendido;
 use Illuminate\Support\Facades\DB;
 
 class PedidosController extends Controller
@@ -74,6 +75,22 @@ class PedidosController extends Controller
                     # code...
                     $suma = $cant->cantidad - $key['cantidad'];
                     Productos::where('descripcion','=',$key['producto'])->update(['cantidad'=>$suma]);
+                }
+                $prod = Productos::where('descripcion','=',$key['producto'])->get();
+                $validator = Vendido::where('id_producto',$prod[0]->id)->get();
+                if (count($validator)>0) {
+                    # code...
+                    $suma = $key['cantidad'] + $validator[0]->cantidad;
+                    Vendido::where('id_producto',$prod[0]->id)->update([
+                        'cantidad'=>$suma
+                    ]);
+                }else{
+                    $cVendido = new Vendido;
+                    $cVendido->id_producto = $prod[0]->id;
+                    $cVendido->descripcion = $prod[0]->descripcion;
+                    $cVendido->cantidad = $prod[0]->cantidad;
+                    $cVendido->total = $prod[0]->precio;
+                    $cVendido->save();
                 }
                 
             }

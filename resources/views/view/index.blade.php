@@ -111,21 +111,16 @@
                             </select>
                             <td>
                               <ul>
-                              <?php
-                                
-                                $des = json_decode($pedido->productos,true );
-                                foreach ($des as $d) {
-                                  # code...
-                                
-                                ?>
+                              @if ($pedido->productos!=NULL || !empty($pedido->productos) )
+                                @php
+                                    $des = json_decode($pedido->productos,true );
+                                @endphp
+                                @foreach ($des as $d)
                                   <li>
-                                    @php
-                                        echo($d['cantidad']." ".$d['producto']);
-                                    @endphp
+                                      {{$d['cantidad']}} {{$d['producto']}}
                                   </li>
-                              <?php 
-                              }
-                              ?>
+                                @endforeach
+                              @endif
                               </ul>
                             </td>
                             <td style="width: 8%;">{{$pedido->abono}}</td>
